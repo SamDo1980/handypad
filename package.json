@@ -1,0 +1,8 @@
+{
+  "name": "payment-landing-demo",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "node dev-server/server.js"
+  }
+}
