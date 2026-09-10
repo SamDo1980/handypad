@@ -4,8 +4,8 @@ pages_build_output_dir = "."
 
 [[d1_databases]]
 binding = "DB"
-database_name = "handypad_orders_db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_name = "handypad"
+database_id = "9ee6064a-001c-4c52-b27e-d24bc31b3df5"
 
 # Non-secret config (safe to keep here). Secrets (API keys) should NOT go
 # here — set them with `wrangler pages secret put NAME` instead.
