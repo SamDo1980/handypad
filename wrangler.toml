@@ -7,14 +7,10 @@ binding = "DB"
 database_name = "handypad"
 database_id = "9ee6064a-001c-4c52-b27e-d24bc31b3df5"
 
-# Non-secret config (safe to keep here). Secrets (API keys) should NOT go
-# here — set them with `wrangler pages secret put NAME` instead.
 [vars]
-SITE_URL = "https://handyman.vn"
+SITE_URL = "https://handypad.handyman.vn"
 SALES_EMAIL = "sales@dlvcorp.com"
-EMAIL_FROM = "no-reply@dlvcorp.com"
-# TODO(Seins): confirm these against the real DLV/Handyman bank account before going live —
-# carried over from the placeholder values that were hardcoded in the old mock UI.
+EMAIL_FROM = "marketing@samaser.com.vn"
 BANK_BIN = "970432"
 BANK_ACCOUNT = "54098995"
 BANK_ACCOUNT_NAME = "LEVI ACKERMAN"
@@ -24,7 +20,3 @@ GOOGLE_SHEET_RANGE = "Sheet1!A:H"
 ODOO_URL = "https://yourcompany.odoo.com"
 ODOO_DB = "yourcompany"
 ODOO_USERNAME = "you@yourcompany.com"
-# Secrets (set qua `wrangler pages secret put`, KHÔNG để ở đây):
-# GOOGLE_SERVICE_ACCOUNT_EMAIL, GOOGLE_PRIVATE_KEY, ODOO_API_KEY,
-# SEPAY_API_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, RESEND_API_KEY,
-# ZALOPAY_APP_ID/KEY1/KEY2
