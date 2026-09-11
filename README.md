@@ -58,9 +58,14 @@ package.json
    them with `wrangler pages secret put <NAME>`:
    `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `ZALOPAY_APP_ID`,
    `ZALOPAY_KEY1`, `ZALOPAY_KEY2`, `SEPAY_API_KEY`, `RESEND_API_KEY` (email),
-   and optionally `GOOGLE_SERVICE_ACCOUNT_EMAIL` / `GOOGLE_PRIVATE_KEY` /
-   `ODOO_API_KEY` if you want the optional Google Sheets / Odoo CRM hooks in
+   and optionally `ODOO_API_KEY` if you want the Odoo CRM hook in
    `functions/_lib/`.
+   Google Sheets logging is opt-in via `GOOGLE_SHEETS_WEBHOOK_URL` in
+   `wrangler.toml` — it points at an Apps Script Web App deployed directly
+   from the target Sheet (Extensions > Apps Script, see
+   `apps-script-webhook.gs`), not a GCP Service Account. This avoids needing
+   any Google Cloud Console / IAM access that Workspace org policies often
+   restrict.
 5. **D1 database** — create it and run the schema:
    ```bash
    wrangler d1 create handypad_orders_db

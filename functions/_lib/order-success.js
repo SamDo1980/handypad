@@ -23,7 +23,7 @@ export async function handlePaymentSuccess(env, order) {
     })
   );
 
-  if (env.GOOGLE_SHEET_ID) {
+  if (env.GOOGLE_SHEETS_WEBHOOK_URL) {
     tasks.push(
       appendOrderToSheet(env, order).catch((err) =>
         console.error("Google Sheets lỗi:", err.message)
