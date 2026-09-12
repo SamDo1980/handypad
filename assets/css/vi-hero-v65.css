@@ -1,0 +1,46 @@
+/* V65 — Vietnamese hero headline only.
+   Keep the EN hero unchanged while matching the VI headline to the body typeface
+   and constraining it to the same content column so it cannot enter the product visual. */
+html[lang="vi"] .hero-copy h1,
+html[lang="vi"] .hero-copy h1 * {
+  font-family: var(--font-body, "Inter", Arial, sans-serif) !important;
+}
+
+html[lang="vi"] .hero-copy h1 {
+  width: min(100%, 720px);
+  max-width: 720px;
+  font-size: clamp(44px, 3.7vw, 60px);
+  line-height: 1.04;
+  letter-spacing: -1.5px;
+}
+
+html[lang="vi"] .hero-copy h1 .headline-line {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+html[lang="vi"] .hero-copy h1 .headline-line + .headline-line {
+  margin-top: 5px;
+  font-size: .78em;
+  line-height: 1.12;
+  letter-spacing: -.8px;
+}
+
+@media (min-width: 901px) and (max-width: 1199px) {
+  html[lang="vi"] .hero-copy h1 {
+    width: min(100%, 680px);
+    max-width: 680px;
+    font-size: clamp(42px, 4.7vw, 56px);
+  }
+}
+
+@media (max-width: 900px) {
+  html[lang="vi"] .hero-copy h1 {
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(38px, 8vw, 52px);
+    letter-spacing: -1px;
+  }
+}

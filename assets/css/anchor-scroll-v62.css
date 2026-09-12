@@ -1,0 +1,12 @@
+/* V62 — keep anchored section headings visible below the sticky header. */
+#product-range,
+#why-choose-handypad {
+  scroll-margin-top: 104px;
+}
+
+@media (max-width: 720px) {
+  #product-range,
+  #why-choose-handypad {
+    scroll-margin-top: 88px;
+  }
+}

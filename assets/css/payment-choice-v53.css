@@ -1,0 +1,143 @@
+/* V53 — payment amount choice for Configure & Order.
+   Keeps the existing Step 5 layout while separating payment amount from payment method. */
+#configure-order .order-payment-choice-block {
+  margin-top: 14px;
+}
+
+#configure-order .order-payment-subhead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+#configure-order .order-payment-subhead strong {
+  color: #08243a;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+#configure-order .order-payment-subhead span {
+  color: #6b7c8b;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: right;
+}
+
+#configure-order .order-payment-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+#configure-order .order-payment-choice {
+  width: 100%;
+  min-width: 0;
+  min-height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 15px 17px;
+  border: 1px solid #d7e0e7;
+  border-radius: 12px;
+  background: #f7f9fa;
+  color: #08243a;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+#configure-order .order-payment-choice:hover:not(:disabled),
+#configure-order .order-payment-choice:focus-visible:not(:disabled) {
+  border-color: #e93420;
+  box-shadow: 0 0 0 2px rgba(233, 52, 32, .08);
+  outline: none;
+}
+
+#configure-order .order-payment-choice.is-active {
+  border-color: #e93420;
+  background: #fff7f5;
+  box-shadow: inset 0 0 0 1px #e93420;
+}
+
+#configure-order .order-payment-choice:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+#configure-order .order-payment-choice-copy {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+#configure-order .order-payment-choice-copy strong {
+  font-size: 17px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+#configure-order .order-payment-choice-copy span {
+  color: #657786;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+#configure-order .order-payment-choice-amount {
+  flex: 0 0 auto;
+  color: #c62e1d;
+  font-size: 19px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+#configure-order .order-payment-sales-note {
+  margin: 9px 0 0;
+  color: #526575;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+#configure-order .order-payment-method-block {
+  margin-top: 18px;
+  transition: opacity .18s ease;
+}
+
+#configure-order .order-payment-method-block.is-locked {
+  opacity: .52;
+}
+
+#configure-order .order-payment-method-block.is-locked .order-payment-card {
+  cursor: not-allowed;
+}
+
+#configure-order .order-payment-method-subhead {
+  margin-bottom: 10px;
+}
+
+#configure-order .order-summary-deposit-line strong {
+  max-width: 58%;
+  text-align: right;
+}
+
+@media (max-width: 760px) {
+  #configure-order .order-payment-subhead {
+    display: block;
+  }
+
+  #configure-order .order-payment-subhead span {
+    display: block;
+    margin-top: 3px;
+    text-align: left;
+  }
+
+  #configure-order .order-payment-choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #configure-order .order-payment-choice {
+    min-height: 78px;
+  }
+}

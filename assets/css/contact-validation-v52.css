@@ -1,0 +1,34 @@
+/* V52 — Contact & Shipping validation spacing.
+   Error messages are positioned inside a reserved inter-row area so validation
+   feedback does not reflow or push the form downward. */
+#configure-order .order-fields {
+  row-gap: 24px;
+}
+
+#configure-order .order-field {
+  position: relative;
+}
+
+#configure-order .order-field-error {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 1;
+  margin: 0 !important;
+  min-height: 0 !important;
+  color: #c62828;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+#configure-order .order-field-error[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 680px) {
+  #configure-order .order-fields {
+    row-gap: 32px;
+  }
+}

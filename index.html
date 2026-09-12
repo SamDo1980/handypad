@@ -169,7 +169,7 @@
       margin: 28px 0 25px;
       color: rgba(255, 255, 255, .82);
       font-size: 18px;
-      line-height: 1.55;
+      line-height: 1.45;
     }
 
     .subheadline-break {
@@ -1618,7 +1618,7 @@
     .faq-heading-line {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 12px;
       justify-content: center;
     }
 
@@ -2526,18 +2526,19 @@
     .site-footer-inner {
       width: min(1160px, calc(100% - 56px));
       margin: 0 auto;
-      padding: clamp(28px, 3vw, 38px) 0 0;
+      padding: clamp(20px, 2vw, 26px) 0 0;
     }
 
     .site-footer-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.45fr) minmax(300px, 1fr);
-      gap: clamp(36px, 5vw, 72px);
-      padding-bottom: clamp(24px, 2.5vw, 32px);
+      grid-template-columns: minmax(0, 680px) minmax(300px, 420px);
+      justify-content: start;
+      gap: clamp(32px, 3.5vw, 56px);
+      padding-bottom: clamp(16px, 1.6vw, 22px);
     }
 
     .site-footer-brand {
-      margin: 0 0 16px;
+      margin: 0 0 10px;
       color: #fff;
       font-size: clamp(24px, 2.5vw, 34px);
       line-height: 1.08;
@@ -2548,9 +2549,9 @@
 
     .site-footer-intro {
       max-width: 540px;
-      margin: 0 0 24px;
+      margin: 0 0 16px;
       font-size: 16px;
-      line-height: 1.65;
+      line-height: 1.5;
     }
 
     .site-footer-company {
@@ -2568,7 +2569,7 @@
     .site-footer-tax { color: var(--orange); }
 
     .site-footer-heading {
-      margin: 4px 0 20px;
+      margin: 2px 0 12px;
       color: #fff;
       font-size: 14px;
       font-weight: 900;
@@ -2578,7 +2579,7 @@
 
     .site-footer-contact {
       display: grid;
-      gap: 18px;
+      gap: 12px;
       margin: 0;
     }
 
@@ -2586,7 +2587,7 @@
       display: grid;
       gap: 4px;
       font-size: 14px;
-      line-height: 1.55;
+      line-height: 1.45;
     }
 
     .site-footer-label {
@@ -2607,7 +2608,7 @@
     .site-footer a:focus-visible { color: #fff; }
 
     .site-footer-bottom {
-      padding: 14px 0 16px;
+      padding: 10px 0 11px;
       border-top: 1px solid rgba(255, 255, 255, .1);
       color: rgba(255, 255, 255, .58);
       font-size: 12px;
@@ -2619,7 +2620,8 @@
 
     @media (max-width: 900px) {
       .site-footer-grid {
-        grid-template-columns: 1.25fr .9fr;
+        grid-template-columns: minmax(0, 1.15fr) minmax(260px, .85fr);
+        gap: 28px;
       }
 
     }
@@ -2627,15 +2629,15 @@
     @media (max-width: 640px) {
       .site-footer-inner {
         width: min(100% - 40px, 1160px);
-        padding-top: 24px;
+        padding-top: 20px;
       }
       .site-footer-grid {
         grid-template-columns: 1fr;
-        gap: 28px;
-        padding-bottom: 22px;
+        gap: 20px;
+        padding-bottom: 16px;
       }
       .site-footer-company { font-size: 11px; }
-      .site-footer-bottom { padding: 12px 0 14px; }
+      .site-footer-bottom { padding: 10px 0 11px; }
     }
 
     .consultation-popup[hidden] { display: none; }
@@ -4098,9 +4100,9 @@
 </style>
 
 
-<style id="handypad-v13-hero-scroll-overlap">
-  /* V13 — smoother HERO ↔ PRODUCT RANGE overlap only.
-     Content, CTA targets, assets, header/navigation, language switch, JS hooks and non-hero sections are unchanged. */
+<style id="handypad-v60-hero-product-range-normal-flow">
+  /* V60 — remove the HERO / PRODUCT RANGE sticky-overlap stage only.
+     HERO and PRODUCT RANGE now remain in normal document flow. */
 
   html,
   body {
@@ -4113,155 +4115,40 @@
     overflow-y: visible;
   }
 
+  :root {
+    --hero-overlap-depth: 0px;
+    --hero-scroll-runway: 0px;
+    --hero-range-entry-offset: 0px;
+  }
+
   .hero-sticky-shell {
     position: relative;
+    height: auto;
+    min-height: 0;
     overflow: visible;
     background: var(--hero-tech-navy, #061b2f);
   }
 
-  @media (min-width: 1200px) {
-    :root {
-      --hero-sticky-top: 86px;
-      --hero-stage-height: max(640px, calc(100svh - var(--hero-sticky-top)));
-      --hero-scroll-runway: 340px;
-      --hero-overlap-depth: 124px;
-      --hero-range-entry-offset: 30px;
-    }
-
-    .hero-sticky-shell {
-      height: auto;
-      min-height: calc(var(--hero-stage-height) + var(--hero-scroll-runway));
-    }
-
-    .hero-sticky-shell .hero {
-      position: sticky;
-      top: var(--hero-sticky-top);
-      z-index: 1;
-      height: var(--hero-stage-height);
-      min-height: var(--hero-stage-height);
-      align-content: start;
-      transform: translateZ(0);
-      backface-visibility: hidden;
-    }
-
-    .hero .proof-wrap {
-      bottom: calc(var(--hero-overlap-depth) + 26px) !important;
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
-    }
-
-    .hero .proof-wrap::before {
-      top: -13px;
-    }
-
-    .hero::before {
-      top: 12px;
-      right: 14px;
-      bottom: calc(var(--hero-overlap-depth) + 34px);
-      left: 14px;
-      height: auto;
-    }
-
-    #product-range {
-      --hero-range-entry-y: var(--hero-range-entry-offset);
-      --hero-range-shadow-alpha: .12;
-      position: relative;
-      z-index: 6;
-      margin-top: calc(-1 * var(--hero-overlap-depth));
-      padding-top: calc(clamp(22px, 2.5vw, 34px) + var(--hero-overlap-depth));
-      transform: translate3d(0, var(--hero-range-entry-y), 0);
-      will-change: transform;
-      backface-visibility: hidden;
-      box-shadow: 0 -22px 50px rgba(3, 17, 29, var(--hero-range-shadow-alpha));
-    }
+  .hero-sticky-shell .hero {
+    position: relative;
+    top: auto;
+    height: auto;
+    z-index: 1;
+    transform: none;
   }
 
-  @media (min-width: 901px) and (max-width: 1199px) {
-    :root {
-      --hero-sticky-top: 86px;
-      --hero-stage-height: max(620px, calc(100svh - var(--hero-sticky-top)));
-      --hero-scroll-runway: 270px;
-      --hero-overlap-depth: 88px;
-      --hero-range-entry-offset: 22px;
-    }
-
-    .hero-sticky-shell {
-      height: auto;
-      min-height: calc(var(--hero-stage-height) + var(--hero-scroll-runway));
-    }
-
-    .hero-sticky-shell .hero {
-      position: sticky;
-      top: var(--hero-sticky-top);
-      z-index: 1;
-      height: var(--hero-stage-height);
-      min-height: var(--hero-stage-height);
-      align-content: start;
-      transform: translateZ(0);
-      backface-visibility: hidden;
-    }
-
-    .hero .proof-wrap {
-      bottom: calc(var(--hero-overlap-depth) + 22px) !important;
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
-    }
-
-    .hero .proof-wrap::before {
-      top: -12px;
-    }
-
-    .hero::before {
-      top: 10px;
-      right: 12px;
-      bottom: calc(var(--hero-overlap-depth) + 30px);
-      left: 12px;
-      height: auto;
-    }
-
-    #product-range {
-      --hero-range-entry-y: var(--hero-range-entry-offset);
-      --hero-range-shadow-alpha: .10;
-      position: relative;
-      z-index: 6;
-      margin-top: calc(-1 * var(--hero-overlap-depth));
-      padding-top: calc(clamp(22px, 2.5vw, 34px) + var(--hero-overlap-depth));
-      transform: translate3d(0, var(--hero-range-entry-y), 0);
-      will-change: transform;
-      backface-visibility: hidden;
-      box-shadow: 0 -16px 38px rgba(3, 17, 29, var(--hero-range-shadow-alpha));
-    }
+  #product-range {
+    position: relative;
+    z-index: 2;
+    margin-top: 0;
+    transform: none;
+    box-shadow: none;
+    will-change: auto;
   }
 
   @media (max-width: 900px) {
     .hero-sticky-shell {
-      height: auto;
-      min-height: 0;
-      overflow: visible;
       background: transparent;
-    }
-
-    .hero-sticky-shell .hero {
-      position: relative;
-      top: auto;
-      height: auto;
-    }
-
-    .hero .proof-wrap {
-      bottom: 24px;
-      margin-bottom: 14px !important;
-    }
-
-    #product-range {
-      margin-top: 0;
-      transform: none;
-      box-shadow: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    #product-range {
-      transform: none !important;
     }
   }
 
@@ -5044,19 +4931,38 @@
   }
 
   #configure-order .order-qty-value {
+    width: 58px;
     min-width: 58px;
+    height: 42px;
+    padding: 0 5px;
+    border: 0;
+    outline: 0;
     text-align: center;
     color: var(--navy-dark);
+    background: #fff;
+    font: inherit;
     font-size: 17px;
     font-weight: 900;
   }
 
   #configure-order .order-cart-qty-value {
-    min-width: 34px;
+    width: 38px;
+    min-width: 38px;
+    height: 28px;
+    padding: 0 3px;
+    border: 0;
+    outline: 0;
     text-align: center;
     color: var(--navy-dark);
+    background: #fff;
+    font: inherit;
     font-size: 13px;
     font-weight: 900;
+  }
+
+  #configure-order .order-qty-value:focus,
+  #configure-order .order-cart-qty-value:focus {
+    box-shadow: inset 0 0 0 2px rgba(235, 54, 36, .55);
   }
 
   #configure-order .order-current-variant {
@@ -5347,6 +5253,31 @@
     transform: translateY(0);
   }
 
+  /* V56 — keep the add-to-cart confirmation prominent without changing other toasts. */
+  #configure-order .order-toast.is-success {
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+    width: min(420px, calc(100vw - 40px));
+    max-width: none;
+    padding: 16px 20px;
+    color: #174f39;
+    background: rgba(244, 252, 247, .98);
+    border: 1px solid #b8ddc7;
+    border-radius: 12px;
+    box-shadow: 0 18px 48px rgba(3, 17, 29, .20);
+    text-align: center;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.45;
+    transform: translate(-50%, calc(-50% + 10px));
+  }
+
+  #configure-order .order-toast.is-success.is-visible {
+    transform: translate(-50%, -50%);
+  }
+
   @media (max-width: 1040px) {
     #configure-order .order-layout { grid-template-columns: 1fr; }
     #configure-order .order-summary {
@@ -5554,9 +5485,8 @@
 
   #configure-order .order-cart-qty-value {
     align-self: stretch;
-    display: inline-grid;
-    place-items: center;
-    padding-inline: 4px;
+    display: block;
+    padding-inline: 3px;
   }
 
   #configure-order .order-payment-brand-row {
@@ -5902,35 +5832,6 @@
 </style>
 
 
-<style id="handypad-v41-stripe-elements-fields">
-  /* V41 — Stripe Elements mount points, styled to match .order-payment-form-field input
-     (Stripe renders its own iframe inside these divs, so padding/border live on the wrapper). */
-  #configure-order .stripe-field {
-    width: 100%;
-    min-height: 48px;
-    padding: 13px 12px;
-    background: rgba(255, 255, 255, .07);
-    border: 1.5px solid rgba(255, 255, 255, .18);
-    border-radius: 9px;
-    transition: border-color .15s ease, box-shadow .15s ease;
-  }
-
-  #configure-order .stripe-field.StripeElement--focus {
-    border-color: var(--orange);
-    box-shadow: 0 0 0 3px rgba(225, 54, 30, .18);
-  }
-
-  #configure-order .stripe-field.StripeElement--invalid {
-    border-color: #ff8a80;
-  }
-
-  #configure-order .order-payment-action[disabled] {
-    opacity: .55;
-    cursor: not-allowed;
-  }
-</style>
-
-
 <style id="handypad-v34-contact-validation-payment-number">
   /* V34 — inline contact validation + Step 5 marker only. */
   #configure-order .order-field-error {
@@ -6167,6 +6068,33 @@
     margin-top: 16px;
   }
 
+  /* Stripe Elements mount points — styled to match .order-payment-form-field
+     input (Stripe renders its own iframe inside these divs, so padding/border
+     live on the wrapper). */
+  #configure-order .stripe-field {
+    width: 100%;
+    min-height: 48px;
+    padding: 13px 12px;
+    background: rgba(255, 255, 255, .07);
+    border: 1.5px solid rgba(255, 255, 255, .18);
+    border-radius: 9px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+
+  #configure-order .stripe-field.StripeElement--focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(225, 54, 30, .18);
+  }
+
+  #configure-order .stripe-field.StripeElement--invalid {
+    border-color: #ff8a80;
+  }
+
+  #configure-order .order-payment-action[disabled] {
+    opacity: .55;
+    cursor: not-allowed;
+  }
+
   #configure-order .order-payment-success-modal[hidden] { display: none; }
 
   #configure-order .order-payment-success-modal {
@@ -6320,6 +6248,34 @@
     }
   }
 </style>
+<link rel="stylesheet" href="assets/css/configure-order-v51.css">
+<link rel="stylesheet" href="assets/css/contact-validation-v52.css">
+<link rel="stylesheet" href="assets/css/payment-choice-v53.css">
+<link rel="stylesheet" href="assets/css/anchor-scroll-v62.css">
+<link rel="stylesheet" href="assets/css/v63-product-range-payment-state.css">
+<link rel="stylesheet" href="assets/css/vi-hero-v65.css">
+
+<style id="handypad-v57-hero-proof-width">
+  /* V57 — keep the existing hero layout; align the metric strip to the full headline/content width. */
+  .hero-copy .proof-wrap {
+    width: 100% !important;
+    max-width: none !important;
+    align-self: stretch;
+  }
+</style>
+
+<link rel="stylesheet" href="assets/css/product-range-motion-v66.css">
+<link rel="stylesheet" href="assets/css/product-range-footer-v69.css">
+
+<style>
+/* V68: no frontend QR preview. Backend may inject a provider QR into the hidden slots later. */
+#configure-order .order-payment-qr-layout--no-preview {
+  grid-template-columns: 1fr;
+}
+#configure-order .order-payment-qr-layout--no-preview > [data-backend-qr-slot][hidden] {
+  display: none !important;
+}
+</style>
 </head>
 <body>
 <div class="page">
@@ -6333,8 +6289,8 @@
 </button>
 <nav aria-label="Primary navigation" class="header-nav" id="header-nav">
 <ul class="header-nav-list">
-<li><a data-spec-download href="assets/HANDYPAD_Product_Specification_ENG.pdf" download="HANDYPAD_Product_Specification_ENG.pdf">Specs</a></li>
 <li><a href="#product-range">Product Range</a></li>
+<li><a href="#why-choose-handypad">Specs</a></li>
 <li><a href="#configure-order">Order</a></li>
 <li class="header-language-item">
 <div class="language-switch" role="group" aria-label="Language">
@@ -6361,15 +6317,15 @@
 <p class="subheadline">Protect exposed structures, equipment and people with a durable, reusable pad that's quick to install and easy to maintain.</p>
 <div class="actions">
 <a class="btn btn-primary" href="#configure-order">BUY NOW</a>
-<a class="btn btn-secondary" data-spec-download href="assets/HANDYPAD_Product_Specification_ENG.pdf" download="HANDYPAD_Product_Specification_ENG.pdf">VIEW SPECS</a>
+<a class="btn btn-secondary" data-spec-download href="assets/HandyPad-by-Handyman-specs-en.pdf" download="HandyPad-by-Handyman-specs-en.pdf">VIEW SPECS</a>
 </div>
 <div class="proof-wrap">
 <div aria-label="Product features" class="proof-strip">
 <div class="proof-item">
-<span class="proof-label proof-metric"><span class="proof-metric-value">4</span><span class="proof-metric-copy">options &amp; add-ons</span></span>
+<span class="proof-label proof-metric"><span class="proof-metric-value">3</span><span class="proof-metric-copy">sizes</span></span>
 </div>
 <div class="proof-item">
-<span class="proof-label proof-metric"><span class="proof-metric-value">3</span><span class="proof-metric-copy">stainless eyelets/strap</span></span>
+<span class="proof-label proof-metric"><span class="proof-metric-value">2</span><span class="proof-metric-copy">add-ons</span></span>
 </div>
 <div class="proof-item">
 <span class="proof-label proof-metric"><span class="proof-metric-value">600D</span><span class="proof-metric-copy">canvas grade</span></span>
@@ -6394,28 +6350,66 @@
 </div>
 </section>
 </div>
-<section aria-label="HANDYPAD product range" class="product-showcase-strip product-float-showcase" id="product-range">
+<section aria-label="HANDYPAD product range" class="product-showcase-strip product-float-showcase product-range-marquee-section" id="product-range">
 <div class="product-showcase-strip-shell">
 <header class="product-float-header scroll-reveal">
 <div class="product-float-eyebrow">PRODUCT RANGE</div>
 </header>
-<div aria-label="HANDYPAD product variants" class="product-showcase-strip-row">
-<figure class="product-showcase-item product-float-card scroll-reveal" style="--reveal-delay:0ms">
-<div class="product-float-media"><img alt="HANDYPAD Single Standard impact protection pad" src="assets/product-range-single-standard.webp"/></div>
-<figcaption><strong>Single Standard</strong><span>24 × 10 × 5 cm</span></figcaption>
-</figure>
-<figure class="product-showcase-item product-float-card scroll-reveal" style="--reveal-delay:100ms">
-<div class="product-float-media"><img alt="HANDYPAD Single Reflective impact protection pad" src="assets/product-range-single-reflective.webp"/></div>
-<figcaption><strong>Single Reflective</strong><span>24 × 10 × 5 cm</span></figcaption>
-</figure>
-<figure class="product-showcase-item product-float-card scroll-reveal" style="--reveal-delay:200ms">
-<div class="product-float-media"><img alt="HANDYPAD Double Standard impact protection pad" src="assets/product-range-double-standard.webp"/></div>
-<figcaption><strong>Double Standard</strong><span>24 × 20 × 5 cm</span></figcaption>
-</figure>
-<figure class="product-showcase-item product-float-card one-metre-card scroll-reveal" style="--reveal-delay:300ms">
-<div class="product-float-media"><img alt="HANDYPAD one metre extended impact protection pad" src="assets/product-range-one-metre.webp"/></div>
-<figcaption><strong>1 Metre</strong><span>Extended-length protection</span></figcaption>
-</figure>
+<div class="product-range-marquee" aria-label="HANDYPAD product variants">
+  <div class="product-range-track">
+    <div class="product-range-group">
+      <figure class="product-range-card">
+        <div class="product-range-media"><img alt="HANDYPAD Single Standard impact protection pad" src="assets/product-range-gallery/single-standard.png"/></div>
+        <figcaption><strong>Single Standard</strong><span>24 × 10 × 5 cm</span></figcaption>
+      </figure>
+      <figure class="product-range-card">
+        <div class="product-range-media"><img alt="HANDYPAD Single Reflective impact protection pad" src="assets/product-range-gallery/single-reflective.png"/></div>
+        <figcaption><strong>Single Reflective</strong><span>24 × 10 × 5 cm</span></figcaption>
+      </figure>
+      <figure class="product-range-card">
+        <div class="product-range-media"><img alt="HANDYPAD Double Standard impact protection pad" src="assets/product-range-gallery/double-standard.png"/></div>
+        <figcaption><strong>Double Standard</strong><span>24 × 20 × 5 cm</span></figcaption>
+      </figure>
+      <figure class="product-range-card">
+        <div class="product-range-media"><img alt="HANDYPAD Double Reflective impact protection pad" src="assets/product-range-gallery/double-reflective.png"/></div>
+        <figcaption><strong>Double Reflective</strong><span>24 × 20 × 5 cm</span></figcaption>
+      </figure>
+      <figure class="product-range-card">
+        <div class="product-range-media"><img alt="HANDYPAD Standard 1 Metre impact protection pad" src="assets/product-range-gallery/one-metre-standard.png"/></div>
+        <figcaption><strong>Standard 1 Metre</strong><span>100 × 24 × 5 cm</span></figcaption>
+      </figure>
+      <figure class="product-range-card">
+        <div class="product-range-media"><img alt="HANDYPAD Reflective 1 Metre impact protection pad" src="assets/product-range-gallery/one-metre-reflective.png"/></div>
+        <figcaption><strong>Reflective 1 Metre</strong><span>100 × 24 × 5 cm</span></figcaption>
+      </figure>
+    </div>
+    <div class="product-range-group" aria-hidden="true">
+      <figure class="product-range-card">
+        <div class="product-range-media"><img alt="" src="assets/product-range-gallery/single-standard.png"/></div>
+        <figcaption><strong>Single Standard</strong><span>24 × 10 × 5 cm</span></figcaption>
+      </figure>
+      <figure class="product-range-card">
+        <div class="product-range-media"><img alt="" src="assets/product-range-gallery/single-reflective.png"/></div>
+        <figcaption><strong>Single Reflective</strong><span>24 × 10 × 5 cm</span></figcaption>
+      </figure>
+      <figure class="product-range-card">
+        <div class="product-range-media"><img alt="" src="assets/product-range-gallery/double-standard.png"/></div>
+        <figcaption><strong>Double Standard</strong><span>24 × 20 × 5 cm</span></figcaption>
+      </figure>
+      <figure class="product-range-card">
+        <div class="product-range-media"><img alt="" src="assets/product-range-gallery/double-reflective.png"/></div>
+        <figcaption><strong>Double Reflective</strong><span>24 × 20 × 5 cm</span></figcaption>
+      </figure>
+      <figure class="product-range-card">
+        <div class="product-range-media"><img alt="" src="assets/product-range-gallery/one-metre-standard.png"/></div>
+        <figcaption><strong>Standard 1 Metre</strong><span>100 × 24 × 5 cm</span></figcaption>
+      </figure>
+      <figure class="product-range-card">
+        <div class="product-range-media"><img alt="" src="assets/product-range-gallery/one-metre-reflective.png"/></div>
+        <figcaption><strong>Reflective 1 Metre</strong><span>100 × 24 × 5 cm</span></figcaption>
+      </figure>
+    </div>
+  </div>
 </div>
 </div>
 </section>
@@ -6459,9 +6453,9 @@
         <section class="order-step is-locked" id="order-step-2" aria-labelledby="order-step-2-title" aria-disabled="true">
           <div class="order-step-head">
             <span class="order-step-number" aria-hidden="true">2</span>
-            <h3 class="order-step-title" id="order-step-2-title" data-order-i18n="step2">Choose option</h3>
+            <h3 class="order-step-title" id="order-step-2-title" data-order-i18n="step2">Add-ons</h3>
           </div>
-          <div class="order-choice-grid" id="order-option-grid" aria-label="HANDYPAD options"></div>
+          <div class="order-choice-grid order-addon-grid" id="order-addon-grid" aria-label="HANDYPAD add-ons"></div>
         </section>
 
         <section class="order-step is-locked" id="order-step-3" aria-labelledby="order-step-3-title" aria-disabled="true">
@@ -6472,7 +6466,7 @@
           <div class="order-quantity-layout">
             <div class="order-qty-stepper" role="group" aria-label="Quantity">
               <button type="button" id="order-qty-minus" aria-label="Decrease quantity">−</button>
-              <span class="order-qty-value" id="order-qty-value" aria-live="polite">1</span>
+              <input class="order-qty-value" id="order-qty-value" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" value="1" aria-label="Quantity" autocomplete="off">
               <button type="button" id="order-qty-plus" aria-label="Increase quantity">+</button>
             </div>
             <div class="order-current-variant" id="order-current-variant" aria-live="polite"></div>
@@ -6529,8 +6523,32 @@
               <span class="order-step-number order-payment-step-number" aria-hidden="true">5</span>
               <h4 class="order-payment-title" data-order-i18n="payment">Payment</h4>
             </div>
-            <div class="order-payment-grid" id="order-payment-grid" aria-label="Payment methods"></div>
+
+            <div class="order-payment-choice-block">
+              <div class="order-payment-subhead">
+                <strong data-order-i18n="paymentChoiceTitle">Choose payment option</strong>
+                <span data-order-i18n="paymentChoiceHint">Choose how much you want to pay now.</span>
+              </div>
+              <div class="order-payment-choice-grid" id="order-payment-choice-grid" aria-label="Payment amount options"></div>
+              <p class="order-payment-sales-note" data-order-i18n="salesContactBeforeDelivery">Our sales team will contact you before delivery.</p>
+            </div>
+
+            <div class="order-payment-method-block is-locked" id="order-payment-method-block" aria-disabled="true">
+              <div class="order-payment-subhead order-payment-method-subhead">
+                <strong data-order-i18n="paymentMethodTitle">Payment method</strong>
+                <span data-order-i18n="paymentMethodHint">Choose a payment option above first.</span>
+              </div>
+              <div class="order-payment-grid" id="order-payment-grid" aria-label="Payment methods"></div>
+            </div>
+
+            <input id="order-payment-type" name="paymentType" type="hidden" value="">
             <input id="order-payment-method" name="paymentMethod" type="hidden" value="">
+            <input id="order-payment-amount" name="paymentAmount" type="hidden" value="">
+            <input id="order-payment-currency" name="paymentCurrency" type="hidden" value="">
+            <input id="order-order-total-vnd" name="orderTotalVnd" type="hidden" value="0">
+            <input id="order-order-total-usd" name="orderTotalUsd" type="hidden" value="0">
+            <input id="order-remaining-balance" name="remainingBalance" type="hidden" value="">
+            <input id="order-remaining-currency" name="remainingCurrency" type="hidden" value="">
             <input id="order-payment-status" name="paymentStatus" type="hidden" value="pending">
           </div>
         </section>
@@ -6551,16 +6569,32 @@
         </div>
         <div class="order-summary-deposit" id="order-summary-deposit" hidden>
           <div class="order-summary-deposit-line">
-            <span data-order-i18n="depositDueNow">Deposit due now</span>
-            <strong id="order-deposit-due">$5.00</strong>
+            <span id="order-due-label" data-order-i18n="paymentOptionNotSelected">Payment option</span>
+            <strong id="order-deposit-due">—</strong>
           </div>
           <div class="order-summary-deposit-line">
             <span data-order-i18n="remainingBalance">Remaining balance</span>
-            <strong id="order-remaining-balance">$0.00</strong>
+            <strong id="order-remaining-balance-display">—</strong>
           </div>
-          <p class="order-summary-deposit-note" data-order-i18n="finalDetailsNote">*Final order details will be confirmed by our sales team.</p>
+          <p class="order-summary-deposit-note" data-order-i18n="finalDetailsNote">*Our sales team will contact you before delivery to confirm the order details.</p>
         </div>
       </aside>
+
+      <section class="order-payment-state-screen" id="order-payment-state-screen" role="dialog" aria-modal="true" aria-labelledby="order-payment-state-title" aria-live="polite" hidden>
+        <div class="order-payment-state-card" id="order-payment-state-card">
+          <button class="order-payment-state-close" id="order-payment-state-close" type="button" aria-label="Close payment status" hidden>×</button>
+          <div class="order-payment-state-icon" id="order-payment-state-icon" aria-hidden="true"><span></span></div>
+          <h3 class="order-payment-state-title" id="order-payment-state-title">PAYMENT PROCESSING</h3>
+          <p class="order-payment-state-copy" id="order-payment-state-copy">Waiting for confirmation from the payment provider.</p>
+          <div class="order-payment-state-details" id="order-payment-state-details" hidden>
+            <div class="order-payment-state-detail" id="order-payment-state-order-id-row" hidden><span data-order-state-i18n="orderId">Order ID</span><strong id="order-payment-state-order-id">—</strong></div>
+            <div class="order-payment-state-detail"><span data-order-state-i18n="amountReceived">Amount received</span><strong id="order-payment-state-amount">—</strong></div>
+            <div class="order-payment-state-detail"><span data-order-state-i18n="confirmedMethod">Payment method</span><strong id="order-payment-state-method">—</strong></div>
+            <div class="order-payment-state-detail"><span data-order-state-i18n="remainingBalance">Remaining balance</span><strong id="order-payment-state-remaining">—</strong></div>
+          </div>
+          <p class="order-payment-state-sales" id="order-payment-state-sales">Our sales team will contact you before delivery.</p>
+        </div>
+      </section>
     </div>
   </div>
   <div class="order-toast" id="order-toast" role="status" aria-live="polite" hidden></div>
@@ -6571,7 +6605,7 @@
       <h3 class="order-payment-dialog-title" id="order-payment-dialog-title">Payment</h3>
 
       <section class="order-payment-panel" id="order-payment-panel-card" data-payment-panel="card" hidden>
-        <div class="order-payment-deposit-callout"><span data-order-i18n="depositDueNow">Deposit due now</span><strong>$5.00</strong></div>
+        <div class="order-payment-deposit-callout"><span class="order-payment-due-label">Amount due now</span><strong class="order-payment-due-amount">—</strong></div>
         <div class="order-payment-card-logos" aria-label="Supported cards">
           <img src="assets/payment-visa.png" alt="Visa">
           <img src="assets/payment-mastercard.png" alt="Mastercard">
@@ -6591,20 +6625,18 @@
           </div>
         </div>
         <p class="order-payment-field-error" id="order-card-errors" hidden></p>
-        <button class="order-payment-action" type="button" id="order-card-pay-btn" data-order-i18n="payButton">PAY</button>
+        <button class="order-payment-action" type="button" data-payment-preview-submit="card" id="order-card-pay-btn" data-order-i18n="payButton">PAY</button>
         <p class="order-payment-backend-note" data-order-i18n="secureCardNote">Payments are processed securely by Stripe — your card details are sent directly to Stripe and never touch our servers.</p>
       </section>
 
       <section class="order-payment-panel" id="order-payment-panel-zalopay" data-payment-panel="zalopay" hidden>
-        <div class="order-payment-qr-layout">
-          <div class="order-payment-qr-card">
-            <img id="order-zalopay-qr" src="assets/payment-qr-temp.png" alt="ZaloPay" hidden>
-            <div class="order-payment-qr-amount"><span data-order-i18n="depositDueNow">Deposit due now</span><strong>$5.00</strong></div>
-          </div>
+        <div class="order-payment-deposit-callout"><span class="order-payment-due-label">Amount due now</span><strong class="order-payment-due-amount">—</strong></div>
+        <div class="order-payment-qr-layout order-payment-qr-layout--no-preview">
+          <div class="order-payment-qr-card" id="order-zalopay-qr-slot" data-backend-qr-slot="zalopay" hidden></div>
           <div class="order-payment-instructions">
-            <div class="order-payment-instruction"><span class="order-payment-instruction-index">1</span><div><strong data-order-i18n="zaloStep1Title">Open ZaloPay</strong><span data-order-i18n="zaloStep1Copy">Click the button below to open a secure ZaloPay payment window.</span></div></div>
-            <div class="order-payment-instruction"><span class="order-payment-instruction-index">2</span><div><strong data-order-i18n="zaloStep2Title">Complete payment</strong><span data-order-i18n="zaloStep2Copy">Finish the $5.00 deposit payment inside that window.</span></div></div>
-            <div class="order-payment-instruction"><span class="order-payment-instruction-index">3</span><div><strong data-order-i18n="zaloStep3Title">Automatic confirmation</strong><span data-order-i18n="zaloStep3Copy">This page updates on its own once ZaloPay confirms your payment — no need to refresh.</span></div></div>
+            <div class="order-payment-instruction"><span class="order-payment-instruction-index">1</span><div><strong data-order-i18n="zaloStep1Title">Open ZaloPay</strong><span data-order-i18n="zaloStep1Copy">Open the ZaloPay app on your phone.</span></div></div>
+            <div class="order-payment-instruction"><span class="order-payment-instruction-index">2</span><div><strong data-order-i18n="zaloStep2Title">Open QR scanner</strong><span data-order-i18n="zaloStep2Copy">Choose the QR scan function in ZaloPay.</span></div></div>
+            <div class="order-payment-instruction"><span class="order-payment-instruction-index">3</span><div><strong data-order-i18n="zaloStep3Title">Scan and confirm</strong><span data-order-i18n="zaloStep3Copy">Scan the QR provided by the payment system and confirm the payment in the app.</span></div></div>
             <button class="order-payment-action order-payment-confirm-transfer" type="button" id="order-zalopay-open-btn" data-order-i18n="zaloOpenButton">OPEN ZALOPAY</button>
             <button class="order-payment-action order-payment-confirm-transfer" type="button" id="order-zalopay-reopen-btn" data-order-i18n="zaloReopenButton" hidden>REOPEN PAYMENT WINDOW</button>
             <p class="order-payment-backend-note" id="order-zalopay-note">Preparing your ZaloPay payment...</p>
@@ -6613,34 +6645,25 @@
       </section>
 
       <section class="order-payment-panel" id="order-payment-panel-bank-transfer" data-payment-panel="bank_transfer" hidden>
-        <div class="order-payment-qr-layout">
-          <div class="order-payment-qr-card">
-            <img id="order-bank-qr" src="assets/payment-qr-temp.png" alt="VietQR code for bank transfer" hidden>
-            <div class="order-payment-qr-amount"><span data-order-i18n="depositDueNow">Deposit due now</span><strong>$5.00</strong></div>
-          </div>
+        <div class="order-payment-deposit-callout"><span class="order-payment-due-label">Amount due now</span><strong class="order-payment-due-amount">—</strong></div>
+        <div class="order-payment-qr-layout order-payment-qr-layout--no-preview">
+          <div class="order-payment-qr-card" id="order-vietqr-slot" data-backend-qr-slot="bank_transfer" hidden></div>
           <div>
             <div class="order-bank-details">
-              <div class="order-bank-detail"><span data-order-i18n="accountName">Account name</span><strong id="order-bank-account-name">—</strong></div>
-              <div class="order-bank-detail"><span data-order-i18n="accountNumber">Account number</span><strong id="order-bank-account-number">—</strong></div>
-              <div class="order-bank-detail"><span data-order-i18n="bankName">Bank</span><strong id="order-bank-bank-name">—</strong></div>
+              <div class="order-bank-detail"><span data-order-i18n="accountName">Account name</span><strong id="order-bank-account-name">DLV CORPORATION</strong></div>
+              <div class="order-bank-detail"><span data-order-i18n="accountNumber">Account number</span><strong id="order-bank-account-number">54098995</strong></div>
+              <div class="order-bank-detail"><span data-order-i18n="bankName">Bank</span><strong id="order-bank-bank-name">Ngân hàng TMCP VN Thịnh Vượng - Chi nhánh Trung Sơn</strong></div>
               <div class="order-bank-detail"><span data-order-i18n="transferMethod">Transfer method</span><strong>VietQR / Bank Transfer</strong></div>
               <div class="order-bank-detail"><span data-order-i18n="transferContent">Transfer content</span><strong id="order-bank-transfer-content">—</strong></div>
             </div>
             <p class="order-payment-backend-note" id="order-bank-note">Generating your payment QR code...</p>
-          </div>
+                                  </div>
         </div>
       </section>
     </div>
   </div>
 
-  <div class="order-payment-success-modal" id="order-payment-success-modal" role="dialog" aria-modal="true" aria-labelledby="order-payment-success-title" hidden>
-    <div class="order-payment-success-card" role="document">
-      <div class="order-payment-success-icon" aria-hidden="true">✓</div>
-      <h3 id="order-payment-success-title" data-order-i18n="paymentSuccessTitle">PAYMENT SUCCESSFUL</h3>
-      <p data-order-i18n="paymentSuccessCopy">Your $5.00 deposit has been recorded. Our sales team will contact you to confirm the final order details.</p>
-      <button class="order-payment-success-close" id="order-payment-success-close" type="button" data-order-i18n="paymentSuccessClose">CLOSE</button>
-    </div>
-  </div>
+
 </section>
 
 </main>
@@ -6661,7 +6684,7 @@
 <address class="site-footer-contact">
 <span class="site-footer-contact-item">
 <span class="site-footer-label">Address</span>
-<span>29 Nguyen Van Quy Street, Tan Thuan Ward,<br/>Ho Chi Minh City, Vietnam</span>
+<span>29 Nguyen Van Quy Street, Tan Thuan Ward, Ho Chi Minh City, Vietnam</span>
 </span>
 <span class="site-footer-contact-item">
 <span class="site-footer-label">Phone / WhatsApp / Zalo</span>
@@ -6715,13 +6738,14 @@
 
       const translations = {
         en: {
-          nav: ['Specs', 'Product Range', 'Order'],
+          nav: ['Product Range', 'Specs', 'Order'],
           contactSales: 'Contact Sales', buyNow: 'Buy Now',
           headline: '<span class="headline-line">Simple <span class="headline-accent">Impact Protection</span></span><span class="headline-line">for Demanding Worksites</span>',
           subheadline: "Protect exposed structures, equipment and people with a durable, reusable pad that's quick to install and easy to maintain.",
           heroCtas: ['BUY NOW', 'VIEW SPECS'],
-          proof: [['4', 'options & add-ons'], ['3', 'stainless eyelets/strap'], ['600D', 'canvas grade'], ['15M', 'quick response']],
+          proof: [['3', 'sizes'], ['2', 'add-ons'], ['600D', 'canvas grade'], ['15M', 'quick response']],
           productRange: 'PRODUCT RANGE',
+          productNames: ['Single Standard', 'Single Reflective', 'Double Standard', 'Double Reflective', 'Standard 1 Metre', 'Reflective 1 Metre'],
           productDesc: 'Extended-length protection',
           whyHeading: 'WHY CHOOSE HANDYPAD?',
           whyTitles: ['FIREPROOF CANVAS', 'CLOSED-CELL FOAM SLEEVE', 'REFLECTIVE TAPE'],
@@ -6743,13 +6767,14 @@
           closeConsultation: 'Close consultation form', toggleNav: 'Toggle navigation', primaryNav: 'Primary navigation', language: 'Language'
         },
         vi: {
-          nav: ['Thông số', 'Dòng sản phẩm', 'Đặt hàng'],
+          nav: ['Dòng sản phẩm', 'Thông số', 'Đặt hàng'],
           contactSales: 'Liên hệ Sales', buyNow: 'Mua ngay',
-          headline: '<span class="headline-line">Giải pháp <span class="headline-accent">Bảo vệ Va chạm</span></span><span class="headline-line">Đơn giản cho Công trường Khắt khe</span>',
+          headline: '<span class="headline-line">HandyPad</span><span class="headline-line">Đệm bảo vệ va chạm công trình</span>',
           subheadline: 'Bảo vệ các kết cấu, thiết bị và con người tại các vị trí dễ va chạm bằng tấm đệm bền, có thể tái sử dụng, lắp đặt nhanh và dễ bảo trì.',
           heroCtas: ['MUA NGAY', 'XEM THÔNG SỐ'],
-          proof: [['4', 'tùy chọn & phụ kiện'], ['3', 'khoen inox/dây đai'], ['600D', 'cấp vải Canvas'], ['15M', 'phản hồi nhanh']],
+          proof: [['3', 'kích thước'], ['2', 'phụ kiện bổ sung'], ['600D', 'cấp vải Canvas'], ['15M', 'phản hồi nhanh']],
           productRange: 'DÒNG SẢN PHẨM',
+          productNames: ['Single Tiêu chuẩn', 'Single Phản quang', 'Double Tiêu chuẩn', 'Double Phản quang', '1 Mét Tiêu chuẩn', '1 Mét Phản quang'],
           productDesc: 'Bảo vệ cho chiều dài mở rộng',
           whyHeading: 'VÌ SAO CHỌN HANDYPAD?',
           whyTitles: ['VẢI CANVAS CHỐNG CHÁY', 'ỐNG BỌC XỐP Ô KÍN', 'BĂNG PHẢN QUANG'],
@@ -6788,8 +6813,8 @@
       };
 
       const specsDownloads = Object.freeze({
-        en: { href: 'assets/HANDYPAD_Product_Specification_ENG.pdf', filename: 'HANDYPAD_Product_Specification_ENG.pdf' },
-        vi: { href: 'assets/HANDYPAD_Product_Specification_VND.pdf', filename: 'HANDYPAD_Product_Specification_VND.pdf' }
+        en: { href: 'assets/HandyPad-by-Handyman-specs-en.pdf', filename: 'HandyPad-by-Handyman-specs-en.pdf' },
+        vi: { href: 'assets/HandyPad-by-Handyman-specs-vi.pdf', filename: 'HandyPad-by-Handyman-specs-vi.pdf' }
       });
 
       const syncSpecsDownloads = lang => {
@@ -6816,7 +6841,9 @@
         setTextList('.hero .actions .btn', t.heroCtas);
         setProofMetrics(t.proof);
         const rangeHeading = document.querySelector('.product-float-eyebrow'); if (rangeHeading) rangeHeading.textContent = t.productRange;
-        const oneMetreDesc = document.querySelector('.one-metre-card figcaption span'); if (oneMetreDesc) oneMetreDesc.textContent = t.productDesc;
+        document.querySelectorAll('.product-range-card figcaption strong').forEach((node, index) => {
+          node.textContent = t.productNames[index % t.productNames.length];
+        });
         const whyHeading = document.getElementById('why-handypad-title'); if (whyHeading) whyHeading.textContent = t.whyHeading;
         setTextList('#why-choose-handypad .why-feature-title', t.whyTitles);
         setTextList('#why-choose-handypad .why-feature-copy', t.whyCopies);
@@ -6952,87 +6979,7 @@
   </script>
 
 
-<script id="handypad-v13-smooth-overlap">
-(() => {
-  const shell = document.querySelector('.hero-sticky-shell');
-  const hero = shell?.querySelector('.hero');
-  const productRange = document.getElementById('product-range');
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  if (!shell || !hero || !productRange) return;
-
-  let animationFrame = 0;
-  let stickyStart = 0;
-  let stickyEnd = 0;
-  let entryOffset = 0;
-
-  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-  const easeOutCubic = value => 1 - Math.pow(1 - value, 3);
-
-  const readRootNumber = (name, fallback) => {
-    const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-    const numericValue = Number.parseFloat(value);
-    return Number.isFinite(numericValue) ? numericValue : fallback;
-  };
-
-  const reset = () => {
-    productRange.style.removeProperty('--hero-range-entry-y');
-    productRange.style.removeProperty('--hero-range-shadow-alpha');
-  };
-
-  const measure = () => {
-    if (window.innerWidth <= 900 || reduceMotion.matches) {
-      reset();
-      return;
-    }
-
-    const shellRect = shell.getBoundingClientRect();
-    const scrollY = window.scrollY || window.pageYOffset;
-    const shellTop = shellRect.top + scrollY;
-    const stickyTop = readRootNumber('--hero-sticky-top', 86);
-    const stickyRunway = Math.max(1, shell.offsetHeight - hero.offsetHeight);
-
-    entryOffset = readRootNumber('--hero-range-entry-offset', window.innerWidth >= 1200 ? 30 : 22);
-    stickyStart = shellTop - stickyTop;
-    stickyEnd = stickyStart + stickyRunway;
-
-    update();
-  };
-
-  const update = () => {
-    animationFrame = 0;
-
-    if (window.innerWidth <= 900 || reduceMotion.matches) {
-      reset();
-      return;
-    }
-
-    const scrollY = window.scrollY || window.pageYOffset;
-    const rawProgress = clamp((scrollY - stickyStart) / Math.max(1, stickyEnd - stickyStart), 0, 1);
-    const easedProgress = easeOutCubic(rawProgress);
-    const entryY = (1 - easedProgress) * entryOffset;
-    const shadowAlpha = (window.innerWidth >= 1200 ? .07 : .06) + easedProgress * (window.innerWidth >= 1200 ? .07 : .05);
-
-    productRange.style.setProperty('--hero-range-entry-y', `${entryY.toFixed(2)}px`);
-    productRange.style.setProperty('--hero-range-shadow-alpha', shadowAlpha.toFixed(3));
-  };
-
-  const requestUpdate = () => {
-    if (animationFrame) return;
-    animationFrame = window.requestAnimationFrame(update);
-  };
-
-  window.addEventListener('scroll', requestUpdate, { passive: true });
-  window.addEventListener('resize', () => window.requestAnimationFrame(measure), { passive: true });
-  reduceMotion.addEventListener?.('change', measure);
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', measure, { once: true });
-  } else {
-    measure();
-  }
-})();
-</script>
 
 <script id="handypad-v1-product-range-reveal">
 (() => {
@@ -7170,784 +7117,14 @@
 </script>
 
 
+<script src="assets/js/configure-order-v64.js"></script>
+
 <script>
-  /* TODO(Seins): this is the Stripe TEST publishable key carried over from the
-     payment-demo project. Publishable keys are safe to expose client-side,
-     but replace it with your own (test or live) key from the Stripe
-     Dashboard -> Developers -> API keys before going live. */
   window.STRIPE_PUBLISHABLE_KEY = "pk_test_51UE2ZG3WTwvGrGN2hApagrQXoX0kgUowuQagKRfskwnodc8O2q6Uzpq7lXW20zaFcjn47o6Kt1gM3XjMMMrjTaWb00jxDFLsxH";
 </script>
 <script src="https://js.stripe.com/v3/"></script>
-<script id="handypad-v26-configure-order-script">
-const HANDYPAD_VARIANTS = Object.freeze({
-  single_standard: Object.freeze({sku: 'single_standard', sizeKey: 'single', size: 'Single', optionKey: 'standard', option: 'Standard', dimension: '24 × 10 × 5 cm', color: 'Orange', priceVnd: 550000, priceUsd: 21, label: 'HANDYPAD Standard Single'}),
-  double_standard: Object.freeze({sku: 'double_standard', sizeKey: 'double', size: 'Double', optionKey: 'standard', option: 'Standard', dimension: '24 × 20 × 5 cm', color: 'Orange', priceVnd: 1050000, priceUsd: 40, label: 'HANDYPAD Standard Double'}),
-  single_reflective: Object.freeze({sku: 'single_reflective', sizeKey: 'single', size: 'Single', optionKey: 'reflective', option: 'Reflective', dimension: '24 × 10 × 5 cm', color: 'Orange', priceVnd: 600000, priceUsd: 23, label: 'HANDYPAD Single + Reflective'}),
-  double_reflective: Object.freeze({sku: 'double_reflective', sizeKey: 'double', size: 'Double', optionKey: 'reflective', option: 'Reflective', dimension: '24 × 20 × 5 cm', color: 'Orange', priceVnd: 1100000, priceUsd: 42, label: 'HANDYPAD Double + Reflective'})
-});
+<script src="assets/js/handypad-backend-payment.js"></script>
 
-const HANDYPAD_DEPOSIT_USD = 5;
-/* TODO(Seins): the payment backend (Stripe/VietQR) charges in VND, but the UI
-   only ever quoted a fixed $5.00 deposit. 125000 is a placeholder at roughly
-   25,000 VND/USD — confirm the exact VND amount you want to actually charge
-   (with finance / whoever owns pricing) and update this constant before launch. */
-const HANDYPAD_DEPOSIT_VND = 125000;
-
-const HANDYPAD_PAYMENT_METHODS = Object.freeze({
-  card: Object.freeze({key: 'card', labelKey: 'paymentCard', brand: 'card'}),
-  zalopay: Object.freeze({key: 'zalopay', labelKey: 'paymentZaloPay', brand: 'zalopay'}),
-  bank_transfer: Object.freeze({key: 'bank_transfer', labelKey: 'paymentBankTransfer', brand: 'vietqr'})
-});
-
-(() => {
-  const root = document.getElementById('configure-order');
-  if (!root) return;
-
-  const cart = new Map();
-  const state = {
-    size: null,
-    option: null,
-    quantity: 1,
-    modifyMode: false,
-    paymentMethod: null,
-    paymentStatus: 'pending',
-    contactConfirmed: false,
-    language: document.documentElement.lang === 'vi' ? 'vi' : 'en'
-  };
-
-  const translations = {
-    en: {
-      heading: 'CONFIGURE & ORDER', step1: 'Choose size', step2: 'Choose option', step3: 'Quantity', step4: 'Contact & shipping',
-      fullName: 'Full Name', company: 'Company', email: 'Email', phone: 'Phone / WhatsApp', address: 'Shipping Address', city: 'City', country: 'Country', fullNameError: 'Please enter first and last name (at least 2 words).', emailError: 'Enter a valid email address.', phoneError: 'Enter a valid phone / WhatsApp number.', addressError: 'Enter a valid shipping address.', cityError: 'Enter a valid city name.', countryError: 'Enter a valid country name.',
-      add: 'ADD TO CART', summaryTitle: 'ORDER SUMMARY', empty: 'Your selected items will appear here.', estimatedTotal: 'ESTIMATED TOTAL',
-      modify: 'Modify', done: 'Done', unitPrice: 'Unit Price', quantity: 'Quantity', subtotal: 'Item Subtotal',
-      standard: 'Standard', reflective: 'Reflective', single: 'Single', double: 'Double', added: 'added to cart.', removed: 'Item removed from cart.',
-      decrease: 'Decrease quantity', increase: 'Increase quantity', remove: 'Remove item',
-      payment: 'Payment', paymentCard: 'Card', paymentZaloPay: 'ZaloPay', paymentBankTransfer: 'Bank Transfer',
-      cardNumber: 'Card number', cardExpiry: 'Expiry', cardCvv: 'CVV/CVC', payButton: 'PAY', paymentSuccessTitle: 'PAYMENT SUCCESSFUL', paymentSuccessCopy: 'Your $5.00 deposit has been recorded. Our sales team will contact you to confirm the final order details.', paymentSuccessClose: 'CLOSE', secureCardNote: 'Payments are processed securely by Stripe — your card details are sent directly to Stripe and never touch our servers.', cardGenericError: 'Something went wrong, please try again.',
-      cardDialogTitle: 'Card payment', zaloDialogTitle: 'Pay with ZaloPay', bankDialogTitle: 'Bank Transfer (VietQR)',
-      zaloStep1Title: 'Open ZaloPay', zaloStep1Copy: 'Click the button below to open a secure ZaloPay payment window.', zaloStep2Title: 'Complete payment', zaloStep2Copy: 'Finish the $5.00 deposit payment inside that window.', zaloStep3Title: 'Automatic confirmation', zaloStep3Copy: 'This page updates on its own once ZaloPay confirms your payment — no need to refresh.',
-      zaloOpenButton: 'OPEN ZALOPAY', zaloReopenButton: 'REOPEN PAYMENT WINDOW', zaloWaitingNote: 'Waiting for confirmation from ZaloPay...', zaloPreparing: 'Preparing your ZaloPay payment...',
-      accountName: 'Account name', accountNumber: 'Account number', bankName: 'Bank', transferMethod: 'Transfer method', transferContent: 'Transfer content', bankWaitingNote: 'Waiting for your transfer — this page updates automatically once it is received.', bankPreparing: 'Generating your payment QR code...',
-      depositDueNow: 'Deposit due now', remainingBalance: 'Remaining balance', finalDetailsNote: '*Final order details will be confirmed by our sales team.',
-      continueToPayment: 'CONTINUE TO PAYMENT'
-    },
-    vi: {
-      heading: 'CẤU HÌNH & ĐẶT HÀNG', step1: 'Chọn kích thước', step2: 'Chọn tùy chọn', step3: 'Số lượng', step4: 'Thông tin liên hệ & giao hàng',
-      fullName: 'Họ và tên', company: 'Công ty', email: 'Email', phone: 'Điện thoại / WhatsApp', address: 'Địa chỉ giao hàng', city: 'Thành phố', country: 'Quốc gia', fullNameError: 'Vui lòng nhập họ và tên gồm ít nhất 2 từ.', emailError: 'Vui lòng nhập địa chỉ email hợp lệ.', phoneError: 'Vui lòng nhập số điện thoại / WhatsApp hợp lệ.', addressError: 'Vui lòng nhập địa chỉ giao hàng hợp lệ.', cityError: 'Vui lòng nhập tên thành phố hợp lệ.', countryError: 'Vui lòng nhập tên quốc gia hợp lệ.',
-      add: 'THÊM VÀO GIỎ', summaryTitle: 'TÓM TẮT ĐƠN HÀNG', empty: 'Các sản phẩm đã chọn sẽ hiển thị tại đây.', estimatedTotal: 'TỔNG TẠM TÍNH',
-      modify: 'Chỉnh sửa', done: 'Xong', unitPrice: 'Đơn giá', quantity: 'Số lượng', subtotal: 'Thành tiền',
-      standard: 'Tiêu chuẩn', reflective: 'Phản quang', single: 'Single', double: 'Double', added: 'đã được thêm vào giỏ.', removed: 'Đã xóa sản phẩm khỏi giỏ.',
-      decrease: 'Giảm số lượng', increase: 'Tăng số lượng', remove: 'Xóa sản phẩm',
-      payment: 'Thanh toán', paymentCard: 'Thẻ', paymentZaloPay: 'ZaloPay', paymentBankTransfer: 'Chuyển khoản ngân hàng',
-      cardNumber: 'Số thẻ', cardExpiry: 'Tháng/Năm hết hạn', cardCvv: 'CVV/CVC', payButton: 'THANH TOÁN', paymentSuccessTitle: 'THANH TOÁN THÀNH CÔNG', paymentSuccessCopy: 'Khoản đặt cọc $5.00 đã được ghi nhận. Đội ngũ sales sẽ liên hệ để xác nhận chi tiết cuối cùng của đơn hàng.', paymentSuccessClose: 'ĐÓNG', secureCardNote: 'Thanh toán được xử lý bảo mật bởi Stripe — thông tin thẻ đi thẳng tới Stripe, không đi qua máy chủ của chúng tôi.', cardGenericError: 'Có lỗi xảy ra, vui lòng thử lại.',
-      cardDialogTitle: 'Thanh toán bằng thẻ', zaloDialogTitle: 'Thanh toán bằng ZaloPay', bankDialogTitle: 'Chuyển khoản ngân hàng (VietQR)',
-      zaloStep1Title: 'Mở ZaloPay', zaloStep1Copy: 'Bấm nút bên dưới để mở cửa sổ thanh toán ZaloPay bảo mật.', zaloStep2Title: 'Hoàn tất thanh toán', zaloStep2Copy: 'Hoàn tất khoản đặt cọc $5.00 ngay trong cửa sổ đó.', zaloStep3Title: 'Tự động xác nhận', zaloStep3Copy: 'Trang này sẽ tự cập nhật khi ZaloPay xác nhận thanh toán — không cần tải lại trang.',
-      zaloOpenButton: 'MỞ ZALOPAY', zaloReopenButton: 'MỞ LẠI CỬA SỔ THANH TOÁN', zaloWaitingNote: 'Đang chờ xác nhận từ ZaloPay...', zaloPreparing: 'Đang chuẩn bị thanh toán ZaloPay...',
-      accountName: 'Tên tài khoản', accountNumber: 'Số tài khoản', bankName: 'Ngân hàng', transferMethod: 'Phương thức', transferContent: 'Nội dung chuyển khoản', bankWaitingNote: 'Đang chờ chuyển khoản — trang sẽ tự cập nhật khi hệ thống nhận được tiền.', bankPreparing: 'Đang tạo mã QR thanh toán...',
-      depositDueNow: 'Đặt cọc thanh toán ngay', remainingBalance: 'Số dư còn lại', finalDetailsNote: '*Chi tiết cuối cùng của đơn hàng sẽ được đội ngũ sales xác nhận.',
-      continueToPayment: 'TIẾP TỤC THANH TOÁN'
-    }
-  };
-
-  const sizeGrid = root.querySelector('#order-size-grid');
-  const optionGrid = root.querySelector('#order-option-grid');
-  const qtyValue = root.querySelector('#order-qty-value');
-  const qtyMinus = root.querySelector('#order-qty-minus');
-  const qtyPlus = root.querySelector('#order-qty-plus');
-  const currentVariantNode = root.querySelector('#order-current-variant');
-  const addButton = root.querySelector('#order-add-cart');
-  const summary = root.querySelector('#order-summary');
-  const summaryEmpty = root.querySelector('#order-summary-empty');
-  const cartList = root.querySelector('#order-cart-list');
-  const totalNode = root.querySelector('#order-estimated-total');
-  const depositWrap = root.querySelector('#order-summary-deposit');
-  const depositDueNode = root.querySelector('#order-deposit-due');
-  const remainingBalanceNode = root.querySelector('#order-remaining-balance');
-  const modifyButton = root.querySelector('#order-modify');
-  const toast = root.querySelector('#order-toast');
-  const paymentBlock = root.querySelector('#order-payment-block');
-  const paymentGrid = root.querySelector('#order-payment-grid');
-  const paymentInput = root.querySelector('#order-payment-method');
-  const paymentStatusInput = root.querySelector('#order-payment-status');
-  const paymentModal = root.querySelector('#order-payment-modal');
-  const paymentDialog = root.querySelector('.order-payment-dialog');
-  const paymentDialogTitle = root.querySelector('#order-payment-dialog-title');
-  const paymentClose = root.querySelector('#order-payment-close');
-  const paymentPanels = [...root.querySelectorAll('[data-payment-panel]')];
-  const continuePaymentButton = root.querySelector('#order-continue-payment');
-  const paymentSuccessModal = root.querySelector('#order-payment-success-modal');
-  const paymentSuccessClose = root.querySelector('#order-payment-success-close');
-  const cardErrorsNode = root.querySelector('#order-card-errors');
-  const cardPayBtn = root.querySelector('#order-card-pay-btn');
-  const zalopayOpenBtn = root.querySelector('#order-zalopay-open-btn');
-  const zalopayReopenBtn = root.querySelector('#order-zalopay-reopen-btn');
-  const zalopayNote = root.querySelector('#order-zalopay-note');
-  const zalopayQrImg = root.querySelector('#order-zalopay-qr');
-  const bankNote = root.querySelector('#order-bank-note');
-  const bankQrImg = root.querySelector('#order-bank-qr');
-  const bankAccountNameNode = root.querySelector('#order-bank-account-name');
-  const bankAccountNumberNode = root.querySelector('#order-bank-account-number');
-  const bankBankNameNode = root.querySelector('#order-bank-bank-name');
-  const bankTransferContentNode = root.querySelector('#order-bank-transfer-content');
-
-  /* Real payment backend wiring (Cloudflare Pages Functions under /api, see functions/). */
-  const paymentApi = {
-    order: null,      // { orderId, method, ... } for the order currently open in the modal
-    popup: null,       // ZaloPay popup window reference
-    pollTimer: 0,
-    stripe: (window.Stripe && window.STRIPE_PUBLISHABLE_KEY) ? Stripe(window.STRIPE_PUBLISHABLE_KEY) : null,
-    elements: null,
-    cardNumberElement: null,
-    cardExpiryElement: null,
-    cardCvcElement: null,
-    clientSecret: null,
-    startedForMethod: null
-  };
-
-  const contactTouched = new Set();
-  const requiredContactFields = [
-    root.querySelector('#order-full-name'),
-    root.querySelector('#order-email'),
-    root.querySelector('#order-phone'),
-    root.querySelector('#order-address'),
-    root.querySelector('#order-city'),
-    root.querySelector('#order-country')
-  ].filter(Boolean);
-
-  const contactValidation = new Map([
-    ['order-full-name', { error: root.querySelector('#order-full-name-error'), test: value => value.length >= 3 && /^[\p{L}\p{M}.'’\-]+(?:\s+[\p{L}\p{M}.'’\-]+)+$/u.test(value) }],
-    ['order-email', { error: root.querySelector('#order-email-error'), test: value => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value) }],
-    ['order-phone', { error: root.querySelector('#order-phone-error'), test: value => {
-      if (!/^[+()\d\s.-]+$/.test(value)) return false;
-      const digits = value.replace(/\D/g, '');
-      return digits.length >= 7 && digits.length <= 15;
-    }}],
-    ['order-address', { error: root.querySelector('#order-address-error'), test: value => value.length >= 5 && /[\p{L}\p{N}]/u.test(value) }],
-    ['order-city', { error: root.querySelector('#order-city-error'), test: value => value.length >= 3 && /^[\p{L}\p{M}\s.'’\-]+$/u.test(value) }],
-    ['order-country', { error: root.querySelector('#order-country-error'), test: value => value.length >= 2 && /^[\p{L}\p{M}\s.'’\-]+$/u.test(value) }]
-  ]);
-  const steps = [1, 2, 3, 4].map(n => root.querySelector(`#order-step-${n}`));
-  let toastTimer = 0;
-
-  const t = () => translations[state.language];
-  const money = value => state.language === 'vi'
-    ? `${Number(value).toLocaleString('vi-VN')} ₫`
-    : `$${Math.round(Number(value)).toLocaleString('en-US')}`;
-  const moneyUsd = value => `$${Number(value).toFixed(2)}`;
-  const variantPrice = variant => state.language === 'vi' ? variant.priceVnd : variant.priceUsd;
-  const variantUsdPrice = variant => variant.priceUsd;
-  const normalizeQty = value => Math.max(1, Math.min(9999, Number.parseInt(value, 10) || 1));
-  const variantKey = () => state.size && state.option ? `${state.size}_${state.option}` : '';
-  const currentVariant = () => HANDYPAD_VARIANTS[variantKey()] || null;
-  const variantEntries = () => Object.entries(HANDYPAD_VARIANTS);
-  const sizeKeys = () => [...new Set(variantEntries().map(([, variant]) => variant.sizeKey))];
-  const optionKeys = () => [...new Set(variantEntries().map(([, variant]) => variant.optionKey))];
-  const sizeVariant = sizeKey => variantEntries().find(([, variant]) => variant.sizeKey === sizeKey)?.[1] || null;
-  const optionVariant = optionKey => HANDYPAD_VARIANTS[`${state.size}_${optionKey}`] || null;
-
-  const setStep = (index, {locked = false, complete = false} = {}) => {
-    const step = steps[index - 1];
-    if (!step) return;
-    step.classList.toggle('is-locked', locked);
-    step.classList.toggle('is-complete', complete);
-    step.setAttribute('aria-disabled', locked ? 'true' : 'false');
-  };
-
-  /* ===================== Real payment backend wiring =====================
-     Talks to the Cloudflare Pages Functions in /functions/api (create-order,
-     create-payment-intent, order-status/[id]) — see functions/ + schema.sql +
-     wrangler.toml. Order status only ever flips to PAID from a signature-
-     verified webhook server-side; this code just polls and reflects it. */
-
-  const showCardError = message => {
-    if (!cardErrorsNode) return;
-    cardErrorsNode.textContent = message || '';
-    cardErrorsNode.hidden = !message;
-  };
-
-  const currentContactPayload = () => ({
-    customerName: root.querySelector('#order-full-name')?.value.trim() || '',
-    customerEmail: root.querySelector('#order-email')?.value.trim() || '',
-    customerPhone: root.querySelector('#order-phone')?.value.trim() || '',
-    note: [
-      currentVariant()?.label,
-      root.querySelector('#order-address')?.value.trim(),
-      root.querySelector('#order-city')?.value.trim(),
-      root.querySelector('#order-country')?.value.trim()
-    ].filter(Boolean).join(' — ')
-  });
-
-  const createOrder = async method => {
-    const res = await fetch('/api/create-order', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ method, amount: HANDYPAD_DEPOSIT_VND, ...currentContactPayload() })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Order creation failed');
-    return data;
-  };
-
-  const stopPolling = () => {
-    if (paymentApi.pollTimer) window.clearInterval(paymentApi.pollTimer);
-    paymentApi.pollTimer = 0;
-  };
-
-  const pollOrderStatus = orderId => {
-    stopPolling();
-    paymentApi.pollTimer = window.setInterval(async () => {
-      try {
-        const res = await fetch(`/api/order-status/${orderId}`);
-        const data = await res.json();
-        if (data.status === 'PAID') {
-          stopPolling();
-          if (paymentApi.popup && !paymentApi.popup.closed) paymentApi.popup.close();
-          showPaymentSuccess(paymentApi.order?.method);
-        }
-      } catch (_) { /* transient network error — keep polling */ }
-    }, 4000);
-  };
-
-  const setupStripeElements = async () => {
-    if (!paymentApi.stripe) {
-      showCardError('Stripe is not configured (missing STRIPE_PUBLISHABLE_KEY).');
-      return;
-    }
-    const res = await fetch('/api/create-payment-intent', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderId: paymentApi.order.orderId, amount: HANDYPAD_DEPOSIT_VND })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Could not start card payment');
-    paymentApi.clientSecret = data.clientSecret;
-
-    if (!paymentApi.cardNumberElement) {
-      paymentApi.elements = paymentApi.stripe.elements();
-      const style = {
-        base: { fontSize: '15px', color: '#fff', fontFamily: 'inherit', '::placeholder': { color: 'rgba(255,255,255,.45)' } },
-        invalid: { color: '#ff8a80' }
-      };
-      paymentApi.cardNumberElement = paymentApi.elements.create('cardNumber', { style, showIcon: true });
-      paymentApi.cardExpiryElement = paymentApi.elements.create('cardExpiry', { style });
-      paymentApi.cardCvcElement = paymentApi.elements.create('cardCvc', { style });
-      paymentApi.cardNumberElement.mount('#order-card-number-element');
-      paymentApi.cardExpiryElement.mount('#order-card-expiry-element');
-      paymentApi.cardCvcElement.mount('#order-card-cvc-element');
-      [paymentApi.cardNumberElement, paymentApi.cardExpiryElement, paymentApi.cardCvcElement].forEach(el => {
-        el.on('change', event => showCardError(event.error ? event.error.message : ''));
-      });
-    }
-  };
-
-  const startCardFlow = async () => {
-    showCardError('');
-    try {
-      if (!paymentApi.order) paymentApi.order = { ...(await createOrder('card')), method: 'card' };
-      await setupStripeElements();
-    } catch (err) {
-      showCardError(err.message);
-    }
-  };
-
-  const startBankFlow = async () => {
-    if (bankNote) { bankNote.hidden = false; bankNote.textContent = t().bankPreparing; }
-    try {
-      const data = await createOrder('bank');
-      paymentApi.order = { ...data, method: 'bank_transfer' };
-      if (bankQrImg) { bankQrImg.src = data.qrImageUrl; bankQrImg.hidden = false; }
-      if (bankAccountNameNode) bankAccountNameNode.textContent = data.bankAccountName || '—';
-      if (bankAccountNumberNode) bankAccountNumberNode.textContent = data.bankAccount || '—';
-      if (bankBankNameNode) bankBankNameNode.textContent = data.bankName || '—';
-      if (bankTransferContentNode) bankTransferContentNode.textContent = data.orderId;
-      if (bankNote) bankNote.textContent = t().bankWaitingNote;
-      pollOrderStatus(data.orderId);
-    } catch (err) {
-      if (bankNote) bankNote.textContent = err.message;
-    }
-  };
-
-  const openZaloPayPopup = payUrl => {
-    if (paymentApi.popup && !paymentApi.popup.closed) {
-      paymentApi.popup.location.href = payUrl;
-    } else {
-      paymentApi.popup = window.open(payUrl, 'zalopay_payment', 'width=480,height=720');
-    }
-  };
-
-  const startZaloFlow = async triggeredPopup => {
-    if (zalopayNote) { zalopayNote.hidden = false; zalopayNote.textContent = t().zaloPreparing; }
-    if (zalopayOpenBtn) zalopayOpenBtn.disabled = true;
-    try {
-      const data = await createOrder('zalopay');
-      paymentApi.order = { ...data, method: 'zalopay' };
-      if (data.payUrl) {
-        if (triggeredPopup && !triggeredPopup.closed) triggeredPopup.location.href = data.payUrl;
-        else openZaloPayPopup(data.payUrl);
-      }
-      if (zalopayOpenBtn) zalopayOpenBtn.hidden = true;
-      if (zalopayReopenBtn) zalopayReopenBtn.hidden = false;
-      if (zalopayNote) zalopayNote.textContent = t().zaloWaitingNote;
-      pollOrderStatus(data.orderId);
-    } catch (err) {
-      if (triggeredPopup && !triggeredPopup.closed) triggeredPopup.close();
-      if (zalopayNote) zalopayNote.textContent = err.message;
-      if (zalopayOpenBtn) zalopayOpenBtn.disabled = false;
-    }
-  };
-
-  const resetPaymentFlowUi = () => {
-    stopPolling();
-    paymentApi.order = null;
-    paymentApi.clientSecret = null;
-    paymentApi.startedForMethod = null;
-    if (paymentApi.popup && !paymentApi.popup.closed) paymentApi.popup.close();
-    paymentApi.popup = null;
-    showCardError('');
-    if (cardPayBtn) { cardPayBtn.disabled = false; }
-    if (zalopayOpenBtn) { zalopayOpenBtn.hidden = false; zalopayOpenBtn.disabled = false; }
-    if (zalopayReopenBtn) zalopayReopenBtn.hidden = true;
-    if (zalopayQrImg) zalopayQrImg.hidden = true;
-    if (bankQrImg) bankQrImg.hidden = true;
-    [bankAccountNameNode, bankAccountNumberNode, bankBankNameNode, bankTransferContentNode].forEach(node => {
-      if (node) node.textContent = '—';
-    });
-  };
-
-  const validateContactField = (field, showError = contactTouched.has(field.id)) => {
-    const config = contactValidation.get(field.id);
-    if (!config) return field.checkValidity();
-
-    const value = field.value.trim();
-
-    // Clear any previous custom error before evaluating the field again.
-    // Otherwise field.validity/checkValidity can stay false after an earlier invalid entry.
-    field.setCustomValidity('');
-    const nativeValid = field.checkValidity();
-    const valid = Boolean(value) && nativeValid && config.test(value, field);
-
-    field.setCustomValidity(valid ? '' : 'invalid');
-    field.setAttribute('aria-invalid', valid ? 'false' : 'true');
-
-    const shouldShowError = Boolean(showError && !valid);
-    field.classList.toggle('is-invalid', shouldShowError);
-    if (config.error) config.error.hidden = !shouldShowError;
-    return valid;
-  };
-
-  const contactIsReady = () => {
-    if (requiredContactFields.length !== 6) return false;
-    return requiredContactFields.every(field => validateContactField(field, contactTouched.has(field.id)));
-  };
-
-  const syncProgress = () => {
-    const hasSize = Boolean(state.size);
-    const hasOption = Boolean(state.option && currentVariant());
-    const hasCart = cart.size > 0;
-    const contactReady = hasCart && contactIsReady();
-    const paymentReady = Boolean(contactReady && state.contactConfirmed);
-
-    setStep(1, {complete: hasSize});
-    setStep(2, {locked: !hasSize, complete: hasOption});
-    setStep(3, {locked: !hasOption, complete: hasCart});
-    setStep(4, {locked: !hasCart, complete: paymentReady});
-
-    paymentBlock?.classList.toggle('is-locked', !paymentReady);
-    paymentBlock?.classList.toggle('is-complete', state.paymentStatus === 'success');
-    paymentBlock?.setAttribute('aria-disabled', paymentReady ? 'false' : 'true');
-    if (continuePaymentButton) continuePaymentButton.disabled = !hasCart;
-    addButton.disabled = !hasOption;
-  };
-
-  const renderSizes = () => {
-    sizeGrid.innerHTML = '';
-    sizeKeys().forEach(sizeKey => {
-      const variant = sizeVariant(sizeKey);
-      if (!variant) return;
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'order-choice-card';
-      button.dataset.orderSize = sizeKey;
-      button.classList.toggle('is-active', state.size === sizeKey);
-      const name = sizeKey === 'single' ? t().single : t().double;
-      button.innerHTML = `<span class="order-choice-name">${name}</span><span class="order-choice-meta">${variant.dimension}</span>`;
-      sizeGrid.appendChild(button);
-    });
-  };
-
-  const renderOptions = () => {
-    optionGrid.innerHTML = '';
-    optionKeys().forEach(optionKey => {
-      const variant = state.size ? optionVariant(optionKey) : null;
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'order-choice-card';
-      button.dataset.orderOption = optionKey;
-      button.classList.toggle('is-active', state.option === optionKey);
-      const name = optionKey === 'standard' ? t().standard : t().reflective;
-      button.innerHTML = `<span class="order-choice-name">${name}</span>${variant ? `<span class="order-choice-price">${money(variantPrice(variant))}</span>` : ''}`;
-      optionGrid.appendChild(button);
-    });
-  };
-
-  const renderCurrentVariant = () => {
-    const variant = currentVariant();
-    qtyValue.textContent = String(state.quantity);
-    qtyMinus.setAttribute('aria-label', t().decrease);
-    qtyPlus.setAttribute('aria-label', t().increase);
-    if (!variant) {
-      currentVariantNode.innerHTML = '';
-      return;
-    }
-    currentVariantNode.innerHTML = `<strong>${variant.label}</strong><span>${variant.dimension} · ${money(variantPrice(variant))}</span>`;
-  };
-
-  const paymentBrandMarkup = method => {
-    if (method.brand !== 'card') return '';
-    return '<span class="order-payment-brand-row"><img class="order-payment-brand-logo" src="assets/payment-visa.png" alt="Visa"><img class="order-payment-brand-logo order-payment-brand-logo--mastercard" src="assets/payment-mastercard.png" alt="Mastercard"></span>';
-  };
-
-  const renderPayments = () => {
-    if (!paymentGrid) return;
-    paymentGrid.innerHTML = '';
-    Object.values(HANDYPAD_PAYMENT_METHODS).forEach(method => {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'order-payment-card';
-      button.dataset.orderPayment = method.key;
-      const active = state.paymentMethod === method.key;
-      button.classList.toggle('is-active', active);
-      button.setAttribute('aria-pressed', active ? 'true' : 'false');
-      button.innerHTML = `<span class="order-payment-name">${t()[method.labelKey]}</span>${paymentBrandMarkup(method)}`;
-      paymentGrid.appendChild(button);
-    });
-    if (paymentInput) paymentInput.value = state.paymentMethod || '';
-    if (paymentStatusInput) paymentStatusInput.value = state.paymentStatus || 'pending';
-  };
-
-  const paymentDialogTitleKey = method => method === 'card' ? 'cardDialogTitle' : method === 'zalopay' ? 'zaloDialogTitle' : 'bankDialogTitle';
-
-  const openPaymentModal = (method, zaloPopup) => {
-    if (!paymentModal || !HANDYPAD_PAYMENT_METHODS[method]) return;
-    paymentPanels.forEach(panel => { panel.hidden = panel.dataset.paymentPanel !== method; });
-    if (paymentDialogTitle) paymentDialogTitle.textContent = t()[paymentDialogTitleKey(method)];
-    paymentModal.hidden = false;
-    document.body.style.overflow = 'hidden';
-    requestAnimationFrame(() => paymentModal.classList.add('is-visible'));
-    window.setTimeout(() => paymentClose?.focus(), 80);
-
-    if (paymentApi.startedForMethod !== method) {
-      resetPaymentFlowUi();
-      paymentApi.startedForMethod = method;
-      if (method === 'card') startCardFlow();
-      else if (method === 'bank_transfer') startBankFlow();
-      else if (method === 'zalopay') startZaloFlow(zaloPopup);
-    }
-  };
-
-  const closePaymentModal = () => {
-    if (!paymentModal || paymentModal.hidden) return;
-    paymentModal.classList.remove('is-visible');
-    window.setTimeout(() => {
-      paymentModal.hidden = true;
-      document.body.style.overflow = '';
-    }, 180);
-  };
-
-  const closePaymentSuccess = () => {
-    if (!paymentSuccessModal || paymentSuccessModal.hidden) return;
-    paymentSuccessModal.classList.remove('is-visible');
-    window.setTimeout(() => {
-      paymentSuccessModal.hidden = true;
-      document.body.style.overflow = '';
-    }, 180);
-  };
-
-  const showPaymentSuccess = method => {
-    state.paymentMethod = method || state.paymentMethod;
-    state.paymentStatus = 'success';
-    resetPaymentFlowUi();
-    renderPayments();
-    syncProgress();
-    closePaymentModal();
-    window.setTimeout(() => {
-      if (!paymentSuccessModal) return;
-      paymentSuccessModal.hidden = false;
-      document.body.style.overflow = 'hidden';
-      requestAnimationFrame(() => paymentSuccessModal.classList.add('is-visible'));
-      window.setTimeout(() => paymentSuccessClose?.focus(), 80);
-    }, 210);
-  };
-
-  /* Backend handoff: IT can call window.HandyPadPaymentUI.markSuccess(method)
-     after the payment provider confirms the fixed $5 deposit. */
-  window.HandyPadPaymentUI = Object.freeze({
-    markSuccess: method => showPaymentSuccess(method || state.paymentMethod)
-  });
-
-  const showToast = message => {
-    window.clearTimeout(toastTimer);
-    toast.textContent = message;
-    toast.hidden = false;
-    requestAnimationFrame(() => toast.classList.add('is-visible'));
-    toastTimer = window.setTimeout(() => {
-      toast.classList.remove('is-visible');
-      window.setTimeout(() => { toast.hidden = true; }, 180);
-    }, 2400);
-  };
-
-  const renderCart = () => {
-    const hasItems = cart.size > 0;
-    if (!hasItems) {
-      state.paymentMethod = null;
-      state.paymentStatus = 'pending';
-      state.contactConfirmed = false;
-    }
-    summaryEmpty.hidden = hasItems;
-    cartList.hidden = !hasItems;
-    modifyButton.hidden = !hasItems;
-    modifyButton.textContent = state.modifyMode ? t().done : t().modify;
-    modifyButton.setAttribute('aria-pressed', state.modifyMode ? 'true' : 'false');
-    summary.classList.toggle('is-modifying', hasItems && state.modifyMode);
-    cartList.innerHTML = '';
-
-    let total = 0;
-    let totalUsd = 0;
-    cart.forEach((item, key) => {
-      const itemSubtotal = variantPrice(item.variant) * item.quantity;
-      total += itemSubtotal;
-      totalUsd += variantUsdPrice(item.variant) * item.quantity;
-      const row = document.createElement('article');
-      row.className = 'order-cart-item';
-      row.dataset.cartKey = key;
-      row.innerHTML = `
-        <div class="order-cart-item-head">
-          <div><strong>${item.variant.label}</strong><span class="order-cart-item-meta">${item.variant.dimension}</span></div>
-          <button class="order-cart-remove" type="button" data-cart-action="remove" data-cart-key="${key}" aria-label="${t().remove}">×</button>
-        </div>
-        <div class="order-cart-line"><span>${t().unitPrice}</span><b>${money(variantPrice(item.variant))}</b></div>
-        <div class="order-cart-line">
-          <span>${t().quantity}</span>
-          <span class="order-cart-qty" role="group" aria-label="${t().quantity}">
-            <button type="button" data-cart-action="decrease" data-cart-key="${key}" aria-label="${t().decrease}" ${item.quantity <= 1 ? 'disabled' : ''}>−</button>
-            <span class="order-cart-qty-value">${item.quantity}</span>
-            <button type="button" data-cart-action="increase" data-cart-key="${key}" aria-label="${t().increase}">+</button>
-          </span>
-        </div>
-        <div class="order-cart-line is-subtotal"><span>${t().subtotal}</span><b>${money(itemSubtotal)}</b></div>`;
-      cartList.appendChild(row);
-    });
-
-    totalNode.textContent = money(total);
-    if (depositWrap) depositWrap.hidden = !hasItems;
-    if (depositDueNode) depositDueNode.textContent = moneyUsd(HANDYPAD_DEPOSIT_USD);
-    if (remainingBalanceNode) remainingBalanceNode.textContent = moneyUsd(Math.max(0, totalUsd - HANDYPAD_DEPOSIT_USD));
-    syncProgress();
-  };
-
-  const setQuantity = value => {
-    state.quantity = normalizeQty(value);
-    renderCurrentVariant();
-  };
-
-  const addCurrentToCart = () => {
-    const variant = currentVariant();
-    if (!variant) return;
-    const key = variant.sku;
-    const existing = cart.get(key);
-    cart.set(key, {variant, quantity: existing ? existing.quantity + state.quantity : state.quantity});
-    const message = `${variant.label} ${t().added}`;
-    setQuantity(1);
-    renderCart();
-    showToast(message);
-  };
-
-  const setOrderLanguage = lang => {
-    state.language = lang === 'vi' ? 'vi' : 'en';
-    root.querySelectorAll('[data-order-i18n]').forEach(node => {
-      const key = node.dataset.orderI18n;
-      if (t()[key] !== undefined) node.textContent = t()[key];
-    });
-    renderSizes();
-    renderOptions();
-    renderCurrentVariant();
-    renderPayments();
-    renderCart();
-    if (paymentModal && !paymentModal.hidden && state.paymentMethod && paymentDialogTitle) {
-      paymentDialogTitle.textContent = t()[paymentDialogTitleKey(state.paymentMethod)];
-    }
-  };
-
-  sizeGrid.addEventListener('click', event => {
-    const button = event.target.closest('[data-order-size]');
-    if (!button) return;
-    state.size = button.dataset.orderSize;
-    if (state.option && !currentVariant()) state.option = null;
-    renderSizes();
-    renderOptions();
-    renderCurrentVariant();
-    syncProgress();
-  });
-
-  optionGrid.addEventListener('click', event => {
-    const button = event.target.closest('[data-order-option]');
-    if (!button || !state.size) return;
-    state.option = button.dataset.orderOption;
-    renderOptions();
-    renderCurrentVariant();
-    syncProgress();
-  });
-
-  qtyMinus.addEventListener('click', () => setQuantity(state.quantity - 1));
-  qtyPlus.addEventListener('click', () => setQuantity(state.quantity + 1));
-  addButton.addEventListener('click', addCurrentToCart);
-
-  modifyButton.addEventListener('click', () => {
-    if (!cart.size) return;
-    state.modifyMode = !state.modifyMode;
-    renderCart();
-  });
-
-  cartList.addEventListener('click', event => {
-    const button = event.target.closest('[data-cart-action][data-cart-key]');
-    if (!button) return;
-    const key = button.dataset.cartKey;
-    const item = cart.get(key);
-    if (!item) return;
-
-    if (button.dataset.cartAction === 'increase') item.quantity += 1;
-    if (button.dataset.cartAction === 'decrease' && item.quantity > 1) item.quantity -= 1;
-    if (button.dataset.cartAction === 'remove' && state.modifyMode) {
-      cart.delete(key);
-      if (!cart.size) state.modifyMode = false;
-      showToast(t().removed);
-    }
-    renderCart();
-    renderPayments();
-  });
-
-  requiredContactFields.forEach(field => {
-    field.addEventListener('change', syncProgress);
-  });
-
-  contactValidation.forEach((_, id) => {
-    const field = root.querySelector(`#${id}`);
-    if (!field) return;
-
-    field.addEventListener('blur', () => {
-      contactTouched.add(field.id);
-      validateContactField(field, true);
-      if (state.contactConfirmed && !field.checkValidity()) state.contactConfirmed = false;
-      syncProgress();
-    });
-
-    field.addEventListener('input', () => {
-      if (state.contactConfirmed) state.contactConfirmed = false;
-      validateContactField(field, contactTouched.has(field.id));
-      syncProgress();
-    });
-  });
-
-  continuePaymentButton?.addEventListener('click', () => {
-    if (!cart.size) return;
-
-    const invalidFields = requiredContactFields.filter(field => {
-      contactTouched.add(field.id);
-      return !validateContactField(field, true);
-    });
-
-    if (invalidFields.length) {
-      state.contactConfirmed = false;
-      syncProgress();
-      invalidFields[0].focus();
-      invalidFields[0].scrollIntoView({behavior: 'smooth', block: 'center'});
-      return;
-    }
-
-    state.contactConfirmed = true;
-    syncProgress();
-    paymentBlock?.scrollIntoView({behavior: 'smooth', block: 'nearest'});
-  });
-
-  paymentGrid?.addEventListener('click', event => {
-    const button = event.target.closest('[data-order-payment]');
-    if (!button || !cart.size || !state.contactConfirmed || !contactIsReady()) return;
-    const key = button.dataset.orderPayment;
-    if (!HANDYPAD_PAYMENT_METHODS[key]) return;
-
-    // IMPORTANT: for ZaloPay we must call window.open() synchronously, right here in the
-    // click handler and before any "await"/fetch — otherwise the browser's popup blocker
-    // kicks in. We open a blank popup now and redirect it once /api/create-order responds.
-    let zaloPopup = null;
-    if (key === 'zalopay' && paymentApi.startedForMethod !== 'zalopay') {
-      zaloPopup = window.open('', 'zalopay_payment', 'width=480,height=720');
-      if (zaloPopup) zaloPopup.document.write('<!doctype html><meta charset="utf-8"><body style="font-family:sans-serif;padding:24px;color:#555">Loading ZaloPay...</body>');
-    }
-
-    state.paymentMethod = key;
-    state.paymentStatus = 'pending';
-    renderPayments();
-    syncProgress();
-    openPaymentModal(key, zaloPopup);
-  });
-
-  cardPayBtn?.addEventListener('click', async () => {
-    if (!paymentApi.stripe || !paymentApi.clientSecret || !paymentApi.cardNumberElement) return;
-    showCardError('');
-    cardPayBtn.disabled = true;
-    try {
-      const { error, paymentIntent } = await paymentApi.stripe.confirmCardPayment(paymentApi.clientSecret, {
-        payment_method: { card: paymentApi.cardNumberElement }
-      });
-      if (error) throw new Error(error.message);
-      if (paymentIntent.status === 'succeeded') {
-        showPaymentSuccess('card');
-        return;
-      }
-      throw new Error(t().cardGenericError);
-    } catch (err) {
-      showCardError(err.message);
-    } finally {
-      cardPayBtn.disabled = false;
-    }
-  });
-
-  zalopayOpenBtn?.addEventListener('click', () => {
-    // Same popup-blocker consideration as above: open synchronously on this real click.
-    const popup = window.open('', 'zalopay_payment', 'width=480,height=720');
-    if (popup) popup.document.write('<!doctype html><meta charset="utf-8"><body style="font-family:sans-serif;padding:24px;color:#555">Loading ZaloPay...</body>');
-    startZaloFlow(popup);
-  });
-
-  zalopayReopenBtn?.addEventListener('click', () => {
-    if (paymentApi.order?.payUrl) openZaloPayPopup(paymentApi.order.payUrl);
-  });
-
-  paymentClose?.addEventListener('click', closePaymentModal);
-  paymentModal?.addEventListener('click', event => { if (event.target === paymentModal) closePaymentModal(); });
-  paymentDialog?.addEventListener('click', event => event.stopPropagation());
-  paymentSuccessClose?.addEventListener('click', closePaymentSuccess);
-  paymentSuccessModal?.addEventListener('click', event => { if (event.target === paymentSuccessModal) closePaymentSuccess(); });
-  document.addEventListener('keydown', event => {
-    if (event.key !== 'Escape') return;
-    if (paymentSuccessModal && !paymentSuccessModal.hidden) closePaymentSuccess();
-    else if (paymentModal && !paymentModal.hidden) closePaymentModal();
-  });
-
-  document.querySelectorAll('.language-option').forEach(button => {
-    button.addEventListener('click', () => requestAnimationFrame(() => setOrderLanguage(button.dataset.lang)));
-  });
-
-  renderSizes();
-  renderOptions();
-  renderCurrentVariant();
-  renderPayments();
-  renderCart();
-  syncProgress();
-  setOrderLanguage(document.documentElement.lang || 'en');
-})();
-</script>
-
+<script src="assets/js/product-range-motion-v66.js" defer></script>
 </body>
 </html>

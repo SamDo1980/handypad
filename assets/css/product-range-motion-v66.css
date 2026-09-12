@@ -1,0 +1,26 @@
+/* V66 — keep the existing Product Range layout, but hand horizontal motion to
+   a small JS ticker so the six-SKU gallery moves consistently across browsers. */
+#product-range .product-range-marquee {
+  overflow: hidden;
+}
+
+#product-range .product-range-track {
+  animation: none !important;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* The duplicated group is required for a seamless loop, including on systems
+   that advertise reduced-motion preferences. Motion is intentionally very slow. */
+@media (prefers-reduced-motion: reduce) {
+  #product-range .product-range-marquee {
+    overflow: hidden;
+    scrollbar-width: auto;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 2.5%, #000 97.5%, transparent 100%);
+  }
+
+  #product-range .product-range-group[aria-hidden="true"] {
+    display: flex !important;
+  }
+}

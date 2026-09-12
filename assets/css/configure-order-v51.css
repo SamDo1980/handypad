@@ -1,0 +1,354 @@
+/* V50 — Configure & Order refinements. Scoped to the existing section. */
+#configure-order .order-addon-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#configure-order .order-addon-card {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 15px;
+  text-align: left;
+  color: var(--navy-dark);
+  background: #f8fafb;
+  border: 1.5px solid #d8e0e5;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+#configure-order .order-addon-card:hover,
+#configure-order .order-addon-card:focus-visible {
+  border-color: rgba(225, 54, 30, .68);
+  box-shadow: 0 10px 22px rgba(8, 34, 56, .07);
+  outline: none;
+}
+
+#configure-order .order-addon-card.is-active {
+  background: linear-gradient(135deg, #fff 0%, #fff4f1 100%);
+  border-color: var(--orange);
+  box-shadow: inset 0 0 0 1px rgba(225, 54, 30, .12), 0 10px 24px rgba(225, 54, 30, .08);
+}
+
+#configure-order .order-addon-card:disabled {
+  opacity: .46;
+  cursor: not-allowed;
+}
+
+#configure-order .order-addon-copy {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+#configure-order .order-addon-copy .order-choice-name,
+#configure-order .order-addon-copy .order-choice-price {
+  margin: 0;
+  line-height: 1.15;
+}
+
+#configure-order .order-addon-switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: #cbd4da;
+  box-shadow: inset 0 0 0 1px rgba(8, 34, 56, .12);
+  transition: background .18s ease;
+}
+
+#configure-order .order-addon-switch-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(8, 34, 56, .22);
+  transition: transform .18s ease;
+}
+
+#configure-order .order-addon-card.is-active .order-addon-switch {
+  background: var(--orange);
+}
+
+#configure-order .order-addon-card.is-active .order-addon-switch-knob {
+  transform: translateX(20px);
+}
+
+@media (max-width: 680px) {
+  #configure-order .order-addon-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  #configure-order .order-addon-card {
+    gap: 8px;
+    padding: 11px 10px;
+  }
+
+  #configure-order .order-addon-copy .order-choice-name {
+    font-size: 14px;
+  }
+
+  #configure-order .order-addon-copy .order-choice-price {
+    font-size: 13px;
+  }
+
+  #configure-order .order-addon-switch {
+    width: 40px;
+    height: 22px;
+  }
+
+  #configure-order .order-addon-switch-knob {
+    width: 16px;
+    height: 16px;
+  }
+
+  #configure-order .order-addon-card.is-active .order-addon-switch-knob {
+    transform: translateX(18px);
+  }
+}
+
+@media (max-width: 430px) {
+  #configure-order .order-addon-grid {
+    gap: 6px;
+  }
+
+  #configure-order .order-addon-card {
+    gap: 6px;
+    padding: 10px 8px;
+  }
+
+  #configure-order .order-addon-copy .order-choice-name {
+    font-size: 12px;
+  }
+
+  #configure-order .order-addon-copy .order-choice-price {
+    font-size: 11px;
+  }
+
+  #configure-order .order-addon-switch {
+    width: 36px;
+    height: 20px;
+  }
+
+  #configure-order .order-addon-switch-knob {
+    top: 3px;
+    left: 3px;
+    width: 14px;
+    height: 14px;
+  }
+
+  #configure-order .order-addon-card.is-active .order-addon-switch-knob {
+    transform: translateX(16px);
+  }
+}
+
+/* Step 1 — compact three-size selector. Keep all sizes on one horizontal row. */
+#configure-order #order-size-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+#configure-order #order-size-grid .order-choice-card {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 5px;
+  padding: 13px 15px;
+}
+
+#configure-order #order-size-grid .order-choice-name {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  margin: 0;
+}
+
+#configure-order #order-size-grid .order-choice-price {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+  justify-self: end;
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+#configure-order #order-size-grid .order-choice-meta {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin: 0;
+  line-height: 1.25;
+}
+
+@media (max-width: 680px) {
+  #configure-order #order-size-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  #configure-order #order-size-grid .order-choice-card {
+    column-gap: 6px;
+    row-gap: 4px;
+    padding: 11px 10px;
+  }
+
+  #configure-order #order-size-grid .order-choice-name {
+    font-size: 15px;
+  }
+
+  #configure-order #order-size-grid .order-choice-price {
+    font-size: 14px;
+  }
+
+  #configure-order #order-size-grid .order-choice-meta {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 430px) {
+  #configure-order #order-size-grid {
+    gap: 6px;
+  }
+
+  #configure-order #order-size-grid .order-choice-card {
+    column-gap: 4px;
+    padding: 10px 7px;
+  }
+
+  #configure-order #order-size-grid .order-choice-name {
+    font-size: 13px;
+  }
+
+  #configure-order #order-size-grid .order-choice-price {
+    font-size: 12px;
+  }
+
+  #configure-order #order-size-grid .order-choice-meta {
+    font-size: 10px;
+  }
+}
+
+
+/* V49 — wider summary column and bounded cart list for larger multi-SKU orders. */
+@media (min-width: 1041px) {
+  #configure-order .order-layout {
+    grid-template-columns: minmax(0, 1fr) 400px;
+    gap: clamp(24px, 2vw, 30px);
+  }
+
+  #configure-order .order-summary.has-scroll .order-summary-body {
+    max-height: min(56vh, 520px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    padding-right: 14px;
+  }
+
+  #configure-order .order-summary.has-scroll .order-summary-body::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  #configure-order .order-summary.has-scroll .order-summary-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, .05);
+    border-radius: 999px;
+  }
+
+  #configure-order .order-summary.has-scroll .order-summary-body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, .28);
+    border-radius: 999px;
+  }
+}
+
+#configure-order .order-summary-title { font-size: 20px; }
+#configure-order .order-cart-item-head strong { font-size: 14.5px; }
+#configure-order .order-cart-item-meta { font-size: 12px; }
+#configure-order .order-cart-line { font-size: 12.5px; }
+#configure-order .order-cart-line b { font-size: 13.5px; }
+#configure-order .order-summary-total span { font-size: 12px; }
+#configure-order .order-summary-total strong { font-size: 26px; }
+#configure-order .order-summary-deposit-line { font-size: 12.5px; }
+#configure-order .order-summary-deposit-line strong { font-size: 14px; }
+#configure-order .order-summary-deposit-note { font-size: 11.5px; }
+
+
+/* V50 — alternating cart rows improve readability in larger multi-SKU orders. */
+#configure-order .order-cart-item {
+  margin-inline: -12px;
+  padding: 16px 12px;
+  border-bottom-color: rgba(255, 255, 255, .10);
+}
+
+#configure-order .order-cart-item:nth-child(odd) {
+  background: rgba(255, 255, 255, .035);
+}
+
+#configure-order .order-cart-item:nth-child(even) {
+  background: rgba(0, 0, 0, .10);
+}
+
+#configure-order .order-cart-item:first-child {
+  border-radius: 8px 8px 0 0;
+}
+
+#configure-order .order-cart-item:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
+#configure-order .order-cart-item:only-child {
+  border-radius: 8px;
+}
+
+
+/* V51 — compact SKU thumbnails in Order Summary. */
+#configure-order .order-cart-item-head {
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+#configure-order .order-cart-thumb {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex: 0 0 auto;
+  padding: 3px;
+  background: #fff;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 6px;
+}
+
+#configure-order .order-cart-thumb img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+#configure-order .order-cart-item-copy {
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  #configure-order .order-cart-item-head {
+    grid-template-columns: 46px minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  #configure-order .order-cart-thumb {
+    width: 46px;
+    height: 46px;
+  }
+}
