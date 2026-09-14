@@ -66,7 +66,7 @@ Xem chi tiết đầy đủ trong `README-payment-backend.md` (giữ nguyên t�
 3. Thay `window.STRIPE_PUBLISHABLE_KEY` trong `index.html` bằng key thật (đang là test key).
 4. Set các secret qua `wrangler pages secret put`: `STRIPE_SECRET_KEY`,
    `STRIPE_WEBHOOK_SECRET`, `ZALOPAY_APP_ID`, `ZALOPAY_KEY1`, `ZALOPAY_KEY2`,
-   `SEPAY_API_KEY`, `RESEND_API_KEY`, (tuỳ chọn) `ODOO_API_KEY`.
+   `SEPAY_API_KEY`, `BREVO_API_KEY`, (tuỳ chọn) `ODOO_API_KEY`.
 5. Tạo D1 database + chạy `schema.sql`.
 6. Trỏ webhook ZaloPay/Stripe/SePay về `/api/webhook/{zalopay,stripe,sepay}`.
 

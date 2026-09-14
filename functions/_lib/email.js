@@ -1,28 +1,35 @@
+import { WorkerMailer } from "worker-mailer";
+
 export async function sendEmail(env, { to, subject, html }) {
-  if (!env.RESEND_API_KEY) {
-    console.warn("RESEND_API_KEY not set — skipping email send:", subject, "to", to);
+  if (!env.SMTP_HOST || !env.SMTP_USER || !env.SMTP_PASS) {
+    console.warn("SMTP_HOST/SMTP_USER/SMTP_PASS not set — skipping email send:", subject, "to", to);
     return { skipped: true };
   }
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: env.EMAIL_FROM || "no-reply@yourdomain.com",
+  const port = Number(env.SMTP_PORT || 587);
+  const fromEmail = env.EMAIL_FROM || env.SMTP_USER;
+
+  try {
+    const mailer = await WorkerMailer.connect({
+      host: env.SMTP_HOST,
+      port,
+      secure: port === 465,
+      credentials: { username: env.SMTP_USER, password: env.SMTP_PASS },
+      authType: ["plain", "login"],
+    });
+
+    await mailer.send({
+      from: { name: env.EMAIL_FROM_NAME || "HANDYPAD", email: fromEmail },
       to,
       subject,
       html,
-    }),
-  });
+    });
 
-  if (!res.ok) {
-    const text = await res.text();
-    console.error("Resend error:", res.status, text);
+    return { success: true };
+  } catch (err) {
+    console.error("SMTP error:", err.message);
+    return { success: false, error: err.message };
   }
-  return res.json().catch(() => ({}));
 }
 
 export function customerEmailHtml(order) {

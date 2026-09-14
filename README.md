@@ -57,7 +57,7 @@ package.json
 4. **Secrets** — none of these are in the repo (as they shouldn't be). Set
    them with `wrangler pages secret put <NAME>`:
    `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `ZALOPAY_APP_ID`,
-   `ZALOPAY_KEY1`, `ZALOPAY_KEY2`, `SEPAY_API_KEY`, `RESEND_API_KEY` (email),
+   `ZALOPAY_KEY1`, `ZALOPAY_KEY2`, `SEPAY_API_KEY`, `BREVO_API_KEY` (email),
    and optionally `ODOO_API_KEY` if you want the Odoo CRM hook in
    `functions/_lib/`.
    Google Sheets logging is opt-in via `GOOGLE_SHEETS_WEBHOOK_URL` in
