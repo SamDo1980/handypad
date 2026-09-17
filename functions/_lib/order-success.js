@@ -3,14 +3,30 @@ import { appendOrderToSheet } from "./google-sheets.js";
 import { createOdooLead } from "./odoo.js";
 
 export async function handlePaymentSuccess(env, order) {
+  // Create the Odoo lead FIRST (awaited) so its record id is available to
+  // build a real "view in Odoo" link for the sales email below. Everything
+  // else (emails, sheet) then runs in parallel.
+  let odooOrderUrl = null;
+  if (env.ODOO_URL) {
+    try {
+      const leadId = await createOdooLead(env, order);
+      if (leadId) {
+        odooOrderUrl = `${env.ODOO_URL}/web#id=${leadId}&model=crm.lead&view_type=form`;
+      }
+    } catch (err) {
+      console.error("Odoo CRM lỗi:", err.message);
+    }
+  }
+
+  const enrichedOrder = { ...order, odoo_order_url: odooOrderUrl };
   const tasks = [];
 
   if (order.customer_email) {
     tasks.push(
       sendEmail(env, {
         to: order.customer_email,
-        subject: "Xác nhận thanh toán thành công",
-        html: customerEmailHtml(order),
+        subject: `Xác nhận thanh toán thành công HANDYPAD #${order.id}`,
+        html: customerEmailHtml(enrichedOrder),
       })
     );
   }
@@ -18,8 +34,8 @@ export async function handlePaymentSuccess(env, order) {
   tasks.push(
     sendEmail(env, {
       to: env.SALES_EMAIL,
-      subject: `[Đơn mới] ${order.id} đã thanh toán qua ${order.method}`,
-      html: salesEmailHtml(order),
+      subject: salesEmailSubject(enrichedOrder),
+      html: salesEmailHtml(enrichedOrder),
     })
   );
 
@@ -31,13 +47,12 @@ export async function handlePaymentSuccess(env, order) {
     );
   }
 
-  if (env.ODOO_URL) {
-    tasks.push(
-      createOdooLead(env, order).catch((err) =>
-        console.error("Odoo CRM lỗi:", err.message)
-      )
-    );
-  }
-
   await Promise.all(tasks);
+}
+
+function salesEmailSubject(order) {
+  const prefix = order.payment_type === "deposit" ? "DPS" : "ORD";
+  const total = Number(order.order_total_vnd ?? order.amount).toLocaleString("vi-VN") + " ₫";
+  const customerName = order.customer_name || "(chưa có tên)";
+  return `[HANDYPAD] [${prefix}] ${order.id} – ${customerName} – ${total}`;
 }

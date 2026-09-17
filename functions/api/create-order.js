@@ -1,14 +1,29 @@
 import { createZaloPayOrder } from "../_lib/zalopay.js";
 import { nextOrderId } from "../_lib/order-id.js";
 import { getUsdToVndRate } from "../_lib/fx.js";
+import { resolveOrderItems } from "../_lib/catalog.js";
 
 const DEPOSIT_USD = 5;
 
 export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
-    const { method, customerName, customerEmail, customerPhone, note } = body;
+    const { method, customerName, customerEmail, customerPhone } = body;
     const paymentType = body.paymentType === "deposit" ? "deposit" : "full";
+    const company = body.company || body.customer?.company || null;
+    const shipping = body.shipping || {};
+
+    // Product lines + subtotal are always resolved server-side from our own
+    // catalog (never trusted from the client) — see catalog.js.
+    const { items: resolvedItems, subtotal } = resolveOrderItems(body.items);
+    if (!resolvedItems.length) {
+      return Response.json({ error: "Giỏ hàng trống hoặc sản phẩm không hợp lệ" }, { status: 400 });
+    }
+
+    // The deposit is a fixed $5.00 — always computed here from a live FX
+    // rate (never trusted from the client) so it can't be tampered with and
+    // always reflects the rate at the moment the order is created.
+    // A full payment charges the server-computed subtotal above.
     let amount;
     let amountUsd = null;
     let fxRate = null;
@@ -18,7 +33,7 @@ export async function onRequestPost({ request, env }) {
       amountUsd = DEPOSIT_USD;
       amount = Math.max(1, Math.round(DEPOSIT_USD * fxRate));
     } else {
-      amount = Number(body.amount);
+      amount = subtotal;
     }
 
     if (!method || !amount || Number(amount) <= 0) {
@@ -27,10 +42,15 @@ export async function onRequestPost({ request, env }) {
 
     const orderId = await nextOrderId(env, paymentType);
     const now = new Date().toISOString();
+    const note = resolvedItems.map((i) => `${i.quantity}x ${i.name} (${i.variant})`).join("; ");
 
     await env.DB.prepare(
-      `INSERT INTO orders (id, method, payment_type, amount, amount_usd, fx_rate, status, customer_name, customer_email, customer_phone, note, provider_trans_id, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, 'PENDING', ?, ?, ?, ?, NULL, ?, ?)`
+      `INSERT INTO orders (
+         id, method, payment_type, amount, amount_usd, fx_rate, order_total_vnd,
+         status, customer_name, customer_email, customer_phone, company_name,
+         shipping_address, shipping_city, shipping_country, items_json, note,
+         provider_trans_id, created_at, updated_at
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, 'PENDING', ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?, ?)`
     )
       .bind(
         orderId,
@@ -39,10 +59,16 @@ export async function onRequestPost({ request, env }) {
         amount,
         amountUsd,
         fxRate,
+        subtotal,
         customerName || null,
         customerEmail || null,
         customerPhone || null,
-        note || null,
+        company,
+        shipping.address || null,
+        shipping.city || null,
+        shipping.country || null,
+        JSON.stringify(resolvedItems),
+        note,
         now,
         now
       )

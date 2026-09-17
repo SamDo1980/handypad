@@ -68,6 +68,36 @@ package.json
 
 ## Things you (Seins) need to confirm/fill in before deploying
 
+## Email templates + itemized order data (added)
+
+- Order/customer emails now match `marketing-to-sales.md` /
+  `marketing-to-customer.md`: product table (name, variant, qty, unit
+  price, line total), subtotal, "Tổng cần thanh toán", "Số tiền đã thanh
+  toán", "Số tiền còn lại" (deposit orders only), shipping info, and — on
+  the sales email — a "Xem đơn hàng trong Odoo" button once the Odoo lead
+  is created.
+- This needed the order to actually remember its cart contents, so
+  `orders` gained `order_total_vnd`, `company_name`, `shipping_address`,
+  `shipping_city`, `shipping_country`, `items_json`. New DB, run:
+  ```bash
+  wrangler d1 execute handypad --remote --file=./migrations/0002_order_items_and_shipping.sql
+  ```
+  (in addition to `0001_...` from before, if you haven't already).
+- **Prices are now resolved server-side** from `functions/_lib/catalog.js`
+  (a small mirror of `HANDYPAD_PRODUCTS` in `configure-order-v64.js`) —
+  the client only sends which sku/add-ons/quantity were picked, never a
+  price or total. **If you change a price in one place, update the
+  other** — there's no single source of truth between the two yet.
+- Existing orders created before this migration have no `items_json`, so
+  their emails (if ever resent) show no product table — this only affects
+  historical rows, new orders are unaffected.
+- Recipient name/phone in the shipping section reuse the customer's own
+  contact info — the checkout form doesn't collect a separate "ship to
+  someone else" recipient, so `{{recipient_name}}` / `{{recipient_phone}}`
+  from the template map to the customer's fields.
+
+## Things you (Seins) need to confirm/fill in before deploying
+
 1. **Bank account details in `wrangler.toml`** — `BANK_ACCOUNT`,
    `BANK_ACCOUNT_NAME`, `BANK_NAME`, `BANK_BIN` are carried over from the
    values that were hardcoded in the old mock UI (VPBank, account

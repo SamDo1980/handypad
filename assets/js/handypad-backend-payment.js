@@ -38,19 +38,24 @@
     clientSecret: null
   };
 
-  const vndAmountForPayload = payload => Math.max(1, Math.round(Number(payload.orderTotalVnd) || 0));
-
   const contactPayloadFor = payload => ({
     customerName: payload.customer?.fullName || '',
     customerEmail: payload.customer?.email || '',
     customerPhone: payload.customer?.phone || '',
-    note: [
-      payload.customer?.company,
-      ...(payload.items || []).map(item => `${item.quantity}x ${item.sku}${item.addOns?.length ? ' +' + item.addOns.join('+') : ''}`),
-      payload.shipping?.address,
-      payload.shipping?.city,
-      payload.shipping?.country
-    ].filter(Boolean).join(' — ')
+    company: payload.customer?.company || '',
+    shipping: {
+      address: payload.shipping?.address || '',
+      city: payload.shipping?.city || '',
+      country: payload.shipping?.country || ''
+    },
+    // Raw cart lines only (sku/addOns/quantity) — the backend resolves
+    // product names, unit prices and the subtotal itself from its own
+    // catalog, it never trusts prices coming from the client.
+    items: (payload.items || []).map(item => ({
+      sku: item.sku,
+      addOns: item.addOns || [],
+      quantity: item.quantity
+    }))
   });
 
   const createOrder = async (backendMethod, payload) => {
@@ -59,9 +64,6 @@
       paymentType: payload.paymentType === 'deposit' ? 'deposit' : 'full',
       ...contactPayloadFor(payload)
     };
-    if (body.paymentType !== 'deposit') {
-      body.amount = vndAmountForPayload(payload);
-    }
     const res = await fetch('/api/create-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
