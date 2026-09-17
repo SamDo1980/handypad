@@ -1,7 +1,10 @@
 CREATE TABLE IF NOT EXISTS orders (
   id TEXT PRIMARY KEY,
   method TEXT NOT NULL,
+  payment_type TEXT NOT NULL DEFAULT 'full',
   amount INTEGER NOT NULL,
+  amount_usd REAL,
+  fx_rate REAL,
   status TEXT NOT NULL DEFAULT 'PENDING',
   customer_name TEXT,
   customer_email TEXT,
@@ -13,3 +16,9 @@ CREATE TABLE IF NOT EXISTS orders (
 );
 
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
+CREATE INDEX IF NOT EXISTS idx_orders_payment_type ON orders(payment_type);
+
+CREATE TABLE IF NOT EXISTS order_counters (
+  prefix TEXT PRIMARY KEY,
+  next_value INTEGER NOT NULL DEFAULT 1
+);

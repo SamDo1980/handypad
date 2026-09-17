@@ -1,29 +1,6 @@
-/* handypad-backend-payment.js
-   ---------------------------------------------------------------------------
-   Wires the real payment backend (Cloudflare Pages Functions under /api, see
-   /functions, schema.sql, wrangler.toml) into the V70 Configure & Order UI.
-
-   This file does NOT modify configure-order-v64.js's internal state machine.
-   It only uses the public extension points V64 already exposes:
-     - Custom events on #configure-order: handypad:payment-option-change,
-       handypad:payment-method-change, handypad:payment-success
-     - window.HandyPadPaymentUI.getPayload() / .markSuccess(method, data)
-     - The empty [data-backend-qr-slot] containers for ZaloPay / VietQR
-   The one exception is the card panel's own mock "PAY" button: V64 attaches
-   a listener to it that fakes a successful payment with no real charge, so
-   that single button is cloned/replaced here to remove that listener before
-   attaching the real Stripe confirmation handler.
-
-   TODO(Seins): the payment backend charges in VND. For the fixed "deposit"
-   option the UI still only ever quotes $5.00, so HANDYPAD_DEPOSIT_VND below
-   is a placeholder at roughly 25,000 VND/USD — confirm the exact VND amount
-   you want to charge and update this constant before launch. "Pay in full"
-   already charges the real VND order total, no placeholder involved. */
 (() => {
   const root = document.getElementById('configure-order');
   if (!root) return;
-
-  const HANDYPAD_DEPOSIT_VND = 125000;
 
   const isVi = () => document.documentElement.lang === 'vi';
   const L = {
@@ -35,7 +12,6 @@
     stripeNotConfigured: () => isVi() ? 'Stripe chưa được cấu hình (thiếu STRIPE_PUBLISHABLE_KEY).' : 'Stripe is not configured (missing STRIPE_PUBLISHABLE_KEY).'
   };
 
-  // ---- DOM refs -------------------------------------------------------
   const cardErrorsNode = root.querySelector('#order-card-errors');
   const cardPayBtnOriginal = root.querySelector('#order-card-pay-btn');
   const zalopayNote = root.querySelector('#order-zalopay-note');
@@ -49,11 +25,10 @@
   const bankBankNameNode = root.querySelector('#order-bank-bank-name');
   const bankTransferContentNode = root.querySelector('#order-bank-transfer-content');
 
-  // ---- Backend/payment-provider state ----------------------------------
   const backend = {
-    startedKey: null,   // `${paymentType}:${paymentMethod}` for the plan currently open
-    order: null,        // { orderId, ... } returned by /api/create-order
-    popup: null,        // ZaloPay popup window reference
+    startedKey: null,
+    order: null,     
+    popup: null,     
     pollTimer: 0,
     stripe: (window.Stripe && window.STRIPE_PUBLISHABLE_KEY) ? Stripe(window.STRIPE_PUBLISHABLE_KEY) : null,
     elements: null,
@@ -63,9 +38,7 @@
     clientSecret: null
   };
 
-  const vndAmountForPayload = payload => payload.paymentType === 'deposit'
-    ? HANDYPAD_DEPOSIT_VND
-    : Math.max(1, Math.round(Number(payload.orderTotalVnd) || 0));
+  const vndAmountForPayload = payload => Math.max(1, Math.round(Number(payload.orderTotalVnd) || 0));
 
   const contactPayloadFor = payload => ({
     customerName: payload.customer?.fullName || '',
@@ -81,10 +54,18 @@
   });
 
   const createOrder = async (backendMethod, payload) => {
+    const body = {
+      method: backendMethod,
+      paymentType: payload.paymentType === 'deposit' ? 'deposit' : 'full',
+      ...contactPayloadFor(payload)
+    };
+    if (body.paymentType !== 'deposit') {
+      body.amount = vndAmountForPayload(payload);
+    }
     const res = await fetch('/api/create-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ method: backendMethod, amount: vndAmountForPayload(payload), ...contactPayloadFor(payload) })
+      body: JSON.stringify(body)
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Order creation failed');
@@ -106,7 +87,7 @@
           stopPolling();
           onPaid();
         }
-      } catch (_) { /* transient network error — keep polling */ }
+      } catch (_) {}
     }, 4000);
   };
 
@@ -138,7 +119,7 @@
     if (!popup) return;
     try {
       popup.document.write('<!doctype html><meta charset="utf-8"><body style="font-family:sans-serif;padding:24px;color:#555">Loading ZaloPay...</body>');
-    } catch (_) { /* cross-origin or otherwise inaccessible — harmless */ }
+    } catch (_) {}
   };
 
   const openZaloPopup = url => {
@@ -170,13 +151,12 @@
     if (bankTransferContentNode) bankTransferContentNode.textContent = '—';
   };
 
-  // ---- Card (Stripe Elements) -------------------------------------------
-  const setupStripeElements = async (orderId, amountVnd) => {
+  const setupStripeElements = async orderId => {
     if (!backend.stripe) { showCardError(L.stripeNotConfigured()); return; }
     const res = await fetch('/api/create-payment-intent', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ orderId, amount: amountVnd })
+      body: JSON.stringify({ orderId })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Could not start card payment');
@@ -204,7 +184,7 @@
     showCardError('');
     try {
       if (!backend.order) backend.order = { ...(await createOrder('card', payload)), method: 'card' };
-      await setupStripeElements(backend.order.orderId, vndAmountForPayload(payload));
+      await setupStripeElements(backend.order.orderId);
     } catch (err) {
       showCardError(err.message);
     }
@@ -233,17 +213,13 @@
     }
   };
 
-  // Replace V64's mock "PAY" click handler (which fakes success with no real
-  // charge once the raw card inputs are gone) with the real Stripe confirm flow.
   if (cardPayBtnOriginal) {
     const freshCardPayBtn = cardPayBtnOriginal.cloneNode(true);
     cardPayBtnOriginal.parentNode.replaceChild(freshCardPayBtn, cardPayBtnOriginal);
     freshCardPayBtn.addEventListener('click', onCardPayClick);
   }
-  // Re-query so the rest of this file (disable/enable, etc.) targets the live node.
   const cardPayBtn = root.querySelector('#order-card-pay-btn');
 
-  // ---- Bank transfer (VietQR) --------------------------------------------
   const startBankFlow = async payload => {
     if (bankNote) { bankNote.hidden = false; bankNote.textContent = L.bankPreparing(); }
     try {
@@ -265,7 +241,6 @@
     }
   };
 
-  // ---- ZaloPay -------------------------------------------------------------
   const startZaloFlow = async (payload, triggeredPopup) => {
     if (zalopayNote) { zalopayNote.hidden = false; zalopayNote.textContent = L.zaloPreparing(); }
     if (zalopayOpenBtn) zalopayOpenBtn.disabled = true;
@@ -308,7 +283,6 @@
     if (backend.order?.payUrl) openZaloPopup(backend.order.payUrl);
   });
 
-  // ---- Wire into V70's own event hooks -----------------------------------
   const startedKeyFor = payload => `${payload.paymentType}:${payload.paymentMethod}`;
 
   root.addEventListener('handypad:payment-option-change', () => {
@@ -322,9 +296,6 @@
     if (backend.startedKey === key) return;
 
     if (payload.paymentMethod === 'zalopay') {
-      // IMPORTANT: window.open() must happen synchronously, in the same call
-      // stack as the user's click (which dispatched this event synchronously
-      // via emitPaymentEvent), or the popup blocker will kick in.
       const popup = window.open('', 'zalopay_payment', 'width=480,height=720');
       writeLoadingPopup(popup);
       resetBackend();

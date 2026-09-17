@@ -38,6 +38,7 @@ export function customerEmailHtml(order) {
       <h2>Cảm ơn bạn đã thanh toán!</h2>
       <p>Đơn hàng <b>#${order.id}</b> đã được thanh toán/đặt cọc thành công.</p>
       <ul>
+        <li>Loại thanh toán: ${order.payment_type === "deposit" ? "Đặt cọc" : "Thanh toán đầy đủ"}</li>
         <li>Số tiền: <b>${Number(order.amount).toLocaleString("vi-VN")}đ</b></li>
         <li>Phương thức: ${order.method}</li>
       </ul>
@@ -54,6 +55,7 @@ export function salesEmailHtml(order) {
         <li>Khách hàng: ${order.customer_name || "(chưa có tên)"}</li>
         <li>Email: ${order.customer_email || "-"}</li>
         <li>SĐT: ${order.customer_phone || "-"}</li>
+        <li>Loại thanh toán: ${order.payment_type === "deposit" ? "Đặt cọc" : "Thanh toán đầy đủ"}</li>
         <li>Số tiền: <b>${Number(order.amount).toLocaleString("vi-VN")}đ</b></li>
         <li>Phương thức: ${order.method}</li>
       </ul>

@@ -38,20 +38,42 @@ wrangler.toml           Cloudflare Pages/Workers config (adapted — see below)
 package.json
 ```
 
+## Order ids, payment type, and deposit FX conversion (added)
+
+- **Order id prefix** — `ORD` for a full payment, `DPS` for a deposit,
+  followed by a sequential 6-digit counter per prefix (`ORD000001`,
+  `DPS000001`, ...), generated atomically in `functions/_lib/order-id.js`.
+  No more random suffixes / duplicate risk.
+- **Deposit amount in VND** — the UI shows a fixed "$5.00 deposit"; the VND
+  amount is now computed **server-side**, at order-creation time, from a
+  live USD→VND rate (`functions/_lib/fx.js`, falls back to
+  `FX_FALLBACK_USD_VND` / a hardcoded rate if the live lookup fails). The
+  client no longer sends or controls this amount — `amount_usd` and
+  `fx_rate` are stored on the order row for audit. "Pay in full" still
+  charges the real VND order total from the catalog, unchanged.
+- **Google Sheet logging** — only ever happens from `handlePaymentSuccess`
+  (i.e. after a webhook confirms `PAID`), never at order-creation/click
+  time. The sheet payload now has a separate `paymentType` column ("Đặt
+  cọc" / "Thanh toán đầy đủ") so it's never confused with the real `status`
+  column. `apps-script-webhook.gs` was updated to match — redeploy it in
+  Apps Script if you're using an already-deployed version.
+- **Migration needed on the existing D1 database** — the schema gained
+  `payment_type`, `amount_usd`, `fx_rate` columns and an `order_counters`
+  table. Run once against your live DB:
+  ```bash
+  wrangler d1 execute handypad --remote --file=./migrations/0001_payment_type_and_sequential_ids.sql
+  ```
+  (A fresh `wrangler d1 execute handypad --file=./schema.sql` already
+  includes all of this for new databases.)
+
 ## Things you (Seins) need to confirm/fill in before deploying
 
-1. **Deposit amount in VND** — the UI has always shown a fixed "$5.00
-   deposit", but the payment backend charges in VND. I added a placeholder
-   constant `HANDYPAD_DEPOSIT_VND = 125000` (~$5 at a rough 25,000 VND/USD)
-   near the top of the `handypad-v26-configure-order-script` block in
-   `index.html`. Confirm the real VND amount you want to charge and update
-   that one constant.
-2. **Bank account details in `wrangler.toml`** — `BANK_ACCOUNT`,
+1. **Bank account details in `wrangler.toml`** — `BANK_ACCOUNT`,
    `BANK_ACCOUNT_NAME`, `BANK_NAME`, `BANK_BIN` are carried over from the
    values that were hardcoded in the old mock UI (VPBank, account
    `54098995`, "LEVI ACKERMAN"). Double check these are the correct/current
    account before going live.
-3. **Stripe key** — `window.STRIPE_PUBLISHABLE_KEY` in `index.html` is the
+2. **Stripe key** — `window.STRIPE_PUBLISHABLE_KEY` in `index.html` is the
    **test** publishable key from the payment-demo project. Swap in your own
    (test or live) key from the Stripe Dashboard.
 4. **Secrets** — none of these are in the repo (as they shouldn't be). Set

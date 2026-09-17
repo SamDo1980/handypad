@@ -7,11 +7,14 @@ export async function appendOrderToSheet(env, order) {
     body: JSON.stringify({
       orderId: order.id,
       method: order.method,
+      paymentType: order.payment_type === "deposit" ? "Đặt cọc" : "Thanh toán đầy đủ",
       amount: order.amount,
+      amountUsd: order.amount_usd ?? "",
+      fxRate: order.fx_rate ?? "",
       status: order.status,
       customerName: order.customer_name || "",
       customerEmail: order.customer_email || "",
-      customerPhone: order.customer_phone || "",
+      customerPhone: order.customer_phone || ""
     }),
     redirect: "follow",
   });

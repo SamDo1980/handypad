@@ -37,7 +37,7 @@ export async function createOdooLead(env, order) {
     "create",
     [
       {
-        name: `Đơn hàng ${order.id} (${order.method})`,
+        name: `Đơn hàng ${order.id} (${order.method}${order.payment_type === "deposit" ? " — đặt cọc" : " — thanh toán đủ"})`,
         contact_name: order.customer_name || "",
         email_from: order.customer_email || "",
         phone: order.customer_phone || "",

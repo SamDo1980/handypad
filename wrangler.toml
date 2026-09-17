@@ -19,4 +19,6 @@ BANK_NAME = "VPBank - Chi nhanh Trung Son"
 ODOO_URL = "https://dlvcorpodoo.odoo.com"
 ODOO_DB = "samdo1980-dlvcorpodoo-main-36621845"
 ODOO_USERNAME = "marketing@samaser.com.vn"
-GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbz5lDlUERLZSDPZGwtXuaVaArhtMM2zhtrWNEvQspgw3wWgiYUnhxf3PQAJOuni6mgPPg/exec"``
+GOOGLE_SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbz5lDlUERLZSDPZGwtXuaVaArhtMM2zhtrWNEvQspgw3wWgiYUnhxf3PQAJOuni6mgPPg/exec"
+FX_API_URL = "https://open.er-api.com/v6/latest/USD"
+FX_FALLBACK_USD_VND = "26000"
