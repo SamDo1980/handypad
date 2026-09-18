@@ -48,9 +48,6 @@ const orderDateLabel = (order) => {
   }
 };
 
-// Pulls together every derived figure both templates need, from the raw
-// `orders` row (items_json is parsed here; missing/old orders degrade
-// gracefully to an empty item list instead of throwing).
 function computeOrderView(order) {
   let items = [];
   try {

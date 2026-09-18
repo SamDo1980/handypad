@@ -1,13 +1,5 @@
-// Live USD -> VND exchange rate, fetched fresh at order-creation time so the
-// fixed $5.00 deposit is charged at the rate on the day the customer pays,
-// instead of a hardcoded placeholder.
-//
-// Env vars (optional, both have safe defaults):
-//   FX_API_URL           - override the FX provider (must return { rates: { VND: <number> } })
-//   FX_FALLBACK_USD_VND  - rate to use if the live lookup fails, so checkout never breaks
-
 const DEFAULT_FX_API_URL = "https://open.er-api.com/v6/latest/USD";
-const HARDCODED_FALLBACK_RATE = 26000; // last-resort safety net only
+const HARDCODED_FALLBACK_RATE = 26000;
 
 export async function getUsdToVndRate(env) {
   const apiUrl = env.FX_API_URL || DEFAULT_FX_API_URL;
