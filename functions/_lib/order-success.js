@@ -3,6 +3,9 @@ import { appendOrderToSheet } from "./google-sheets.js";
 import { createOdooLead } from "./odoo.js";
 
 export async function handlePaymentSuccess(env, order) {
+  // Create the Odoo lead FIRST (awaited) so its record id is available to
+  // build a real "view in Odoo" link for the sales email below. Everything
+  // else (emails, sheet) then runs in parallel.
   let odooOrderUrl = null;
   if (env.ODOO_URL) {
     try {
@@ -22,7 +25,7 @@ export async function handlePaymentSuccess(env, order) {
     tasks.push(
       sendEmail(env, {
         to: order.customer_email,
-        subject: `Xác nhận thanh toán thành công HANDYPAD #${order.id}`,
+        subject: `Xác nhận thanh toán thành công HANDYPAD #${order.id} – Thanh toán thành công`,
         html: customerEmailHtml(enrichedOrder),
       })
     );

@@ -48,6 +48,9 @@ const orderDateLabel = (order) => {
   }
 };
 
+// Pulls together every derived figure both templates need, from the raw
+// `orders` row (items_json is parsed here; missing/old orders degrade
+// gracefully to an empty item list instead of throwing).
 function computeOrderView(order) {
   let items = [];
   try {
@@ -104,7 +107,8 @@ function itemsTableHtml(items) {
     </table>`;
 }
 
-function orderSummaryHtml(order, view) {
+// shippingFeeNote differs by audience (customer vs sales) per the templates.
+function orderSummaryHtml(order, view, { shippingFeeNote }) {
   return `
     <h4 style="margin:20px 0 8px">Thông tin đơn hàng</h4>
     <p style="margin:2px 0"><b>Mã đơn:</b> ${order.id}</p>
@@ -113,17 +117,20 @@ function orderSummaryHtml(order, view) {
     <p style="margin:2px 0"><b>Phương thức:</b> ${view.paymentMethodLabel}</p>
     ${itemsTableHtml(view.items)}
     <p style="margin:2px 0">Tổng giá trị sản phẩm: <b>${vnd(view.subtotal)}</b></p>
-    <p style="margin:2px 0;color:#666">Phí giao hàng: liên hệ để được thông báo (nếu có)</p>
+    <p style="margin:2px 0;color:#666">Phí giao hàng: ${shippingFeeNote}</p>
     <p style="margin:2px 0">Tổng cần thanh toán: <b>${vnd(view.totalAmount)}</b></p>
     <p style="margin:2px 0">Số tiền đã thanh toán: <b>${vnd(view.amountPaid)}</b></p>
     ${view.isDeposit ? `<p style="margin:2px 0">Số tiền còn lại: <b>${vnd(view.amountRemaining)}</b></p>` : ""}`;
 }
 
-function shippingHtml(order, { recipientLabel = "Người nhận" } = {}) {
+// sectionTitle/phoneLabel differ by audience — the customer template calls
+// this section "Thông tin nhận hàng" and labels the phone "Số điện thoại";
+// the sales template calls it "Giao hàng" and labels the phone "Điện thoại".
+function shippingHtml(order, { sectionTitle, recipientLabel, phoneLabel }) {
   return `
-    <h4 style="margin:20px 0 8px">Giao hàng</h4>
+    <h4 style="margin:20px 0 8px">${sectionTitle}</h4>
     <p style="margin:2px 0"><b>${recipientLabel}:</b> ${order.customer_name || "-"}</p>
-    <p style="margin:2px 0"><b>Điện thoại:</b> ${order.customer_phone || "-"}</p>
+    <p style="margin:2px 0"><b>${phoneLabel}:</b> ${order.customer_phone || "-"}</p>
     <p style="margin:2px 0"><b>Email:</b> ${order.customer_email || "-"}</p>
     <p style="margin:2px 0"><b>Địa chỉ:</b> ${[order.shipping_address, order.shipping_city, order.shipping_country].filter(Boolean).join(", ") || "-"}</p>`;
 }
@@ -138,10 +145,16 @@ export function customerEmailHtml(order) {
       Đơn hàng hiện đang được xử lý. Đội ngũ DLV Corporation sẽ liên hệ nếu cần xác nhận
       thêm thông tin liên quan đến giao hàng.</p>
 
-      ${orderSummaryHtml(order, view)}
+      ${orderSummaryHtml(order, view, {
+        shippingFeeNote: "Nhân viên sẽ liên hệ với bạn để thông báo phí giao hàng (nếu có)",
+      })}
       <p>Đội ngũ sale của chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.</p>
 
-      ${shippingHtml(order)}
+      ${shippingHtml(order, {
+        sectionTitle: "Thông tin nhận hàng",
+        recipientLabel: "Người nhận",
+        phoneLabel: "Số điện thoại",
+      })}
 
       <p style="margin-top:24px">Nếu bạn cần thay đổi thông tin đơn hàng hoặc cần hỗ trợ, vui lòng liên hệ:</p>
       <p style="margin:2px 0">Email: sales@dlvcorp.com</p>
@@ -165,8 +178,14 @@ export function salesEmailHtml(order) {
       <p style="margin:2px 0"><b>Điện thoại:</b> ${order.customer_phone || "-"}</p>
       <p style="margin:2px 0"><b>Nguồn:</b> handypad.handyman.vn</p>
 
-      ${orderSummaryHtml(order, view)}
-      ${shippingHtml(order, { recipientLabel: "Người nhận" })}
+      ${orderSummaryHtml(order, view, {
+        shippingFeeNote: "Liên hệ với khách hàng để thông báo phí giao hàng (nếu có)",
+      })}
+      ${shippingHtml(order, {
+        sectionTitle: "Giao hàng",
+        recipientLabel: "Người nhận",
+        phoneLabel: "Điện thoại",
+      })}
 
       <p style="margin-top:20px"><b>Action:</b> Vui lòng kiểm tra đơn hàng trên Odoo và liên hệ khách nếu cần xác nhận thêm thông tin giao hàng.</p>
       ${
