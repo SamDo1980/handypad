@@ -145,8 +145,9 @@ export function createOrderSummary({ catalogue, cart, announce, checkout }) {
   window.addEventListener('resize', refreshNextActionVisibility);
 
   function updateBar() {
-    const order = checkout?.getState().order;
-    const showDue = order?.items.length && order.payment.amountOption && order.payment.amountDueNow !== null;
+    const state = checkout?.getState(), order = state?.order;
+    // Orders are paid in full, so the total becomes "Amount due now" once Payment unlocks.
+    const showDue = Boolean(order?.items.length && state.paymentUnlocked);
     barLabel.textContent = showDue ? t('Amount due now') : countText(totals);
     barAmount.textContent = formatPrice(showDue ? order.payment.amountDueNow : totals.amount, totals.currency);
     barAction.textContent = t('View order');
@@ -182,7 +183,7 @@ export function createOrderSummary({ catalogue, cart, announce, checkout }) {
   });
   checkout?.subscribe(state => {
     const { order } = state;
-    paymentFooter.replaceChildren(...(order.items.length && order.payment.amountOption ? [createPaymentSummary(order, true)] : []));
+    paymentFooter.replaceChildren(...(order.items.length && state.paymentUnlocked ? [createPaymentSummary(order, true)] : []));
     updateBar();
     updateNextAction(state);
   });

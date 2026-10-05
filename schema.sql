@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS orders (
   fx_rate REAL,
   order_total_vnd INTEGER,
   company_name TEXT,
+  tax_code TEXT,
+  vat_invoice INTEGER NOT NULL DEFAULT 0,
   shipping_address TEXT,
   shipping_city TEXT,
   shipping_country TEXT,

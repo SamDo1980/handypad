@@ -14,6 +14,7 @@ export const handlePaymentSuccess = runAfterPaid([
     toSaleOrder: (order) => ({
       reference: order.id,
       origin: `Website HANDYPAD ${order.id}`,
+      note: order.vat_invoice ? `Yêu cầu xuất hoá đơn VAT — Công ty: ${order.company_name || ""} — MST: ${order.tax_code || ""}` : "",
       customer: {
         name: order.customer_name || order.customer_email || `Khách hàng ${order.id}`,
         email: order.customer_email,

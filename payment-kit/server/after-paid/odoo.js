@@ -105,7 +105,8 @@ export async function createOdooSaleOrder(env, sale, { confirm = true, sendEmail
     partner_id: partnerId,
     client_order_ref: sale.reference,
     origin: sale.origin || sale.reference,
-    order_line: orderLines
+    order_line: orderLines,
+    ...(sale.note ? { note: sale.note } : {})
   }]));
 
   if (confirm) await execute(env, uid, "sale.order", "action_confirm", [[saleOrderId]]);

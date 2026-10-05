@@ -132,6 +132,7 @@ export const afterPaid = runAfterPaid([
     toSaleOrder: (order) => ({
       reference: order.id,                    // "Customer Reference" trên Sales Order
       origin: `Website ${order.id}`,          // "Source Document"
+      note: "",                             // (tuỳ chọn) ghi chú hiện trên Sales Order
       customer: {
         name: order.customer_name, email: order.customer_email, phone: order.customer_phone,
         company: order.company_name, street: order.shipping_address,
@@ -311,7 +312,51 @@ Checklist trước khi chạy thật:
       trên Odoo, khách nhận email, Sheet có dòng mới
 - [ ] Bấm thử "huỷ" ở PayPal: đơn vẫn `PENDING`
 
-## 3. Thêm cổng thanh toán khác
+## 3. Nối vào một project chỉ có frontend
+
+Trường hợp hay gặp: nhận một bản frontend hoàn chỉnh (thanh toán còn ở chế độ mô
+phỏng) và cần gắn backend vào. Ví dụ đã làm: `handypad-new-test-main`.
+
+**Copy vào project** (không sửa gì bên trong `payment-kit/`):
+
+| Thứ copy | Việc cần chỉnh |
+| --- | --- |
+| `payment-kit/` | không |
+| `functions/api/**` (5 file route) | không |
+| `functions/_lib/payments.js` | cách tính giá, các cột lưu thêm của đơn |
+| `functions/_lib/order-success.js` | ánh xạ đơn → Odoo / Sheets |
+| `functions/_lib/order-id.js` | tiền tố mã đơn nếu muốn |
+| `schema.sql`, `wrangler.toml` | tên project, D1, các biến |
+
+**Giá lấy thẳng từ frontend.** Nếu frontend có file dữ liệu sản phẩm là ES module
+thuần (không đụng tới `window`/`document`), cho server import chính file đó thay vì
+chép lại bảng giá — frontend đổi giá thì số tiền thu tự đổi theo:
+
+```js
+// functions/_lib/catalog.js
+import { products } from "../../src/data/products.js";
+const bySku = new Map(products.map((p) => [p.id, p]));
+```
+
+Trình duyệt chỉ gửi `sku` + `quantity`; server tra giá từ `bySku`.
+
+**Sửa ở frontend** — chỉ ở lớp nối với backend, không đụng giao diện:
+
+1. *Cấu hình*: bật chế độ thật, khai báo `apiBase: '/api'`, chỉ bật phương thức đã
+   có backend.
+2. *Lớp gọi API* (payment service): thay bằng bản gọi `payment-kit/client`
+   (`createOrder`, `getOrderStatus`) và trả kết quả về đúng dạng frontend đang dùng.
+3. *Tự kiểm tra trạng thái*: sau khi tạo giao dịch, gọi `getOrderStatus` 4 giây/lần
+   tới khi `PAID` (frontend mô phỏng thường chỉ có nút "kiểm tra thủ công").
+4. *Mở cửa sổ thanh toán ngay trong sự kiện click*, rồi mới gọi API và chuyển
+   cửa sổ đó tới `payUrl`. Mở sau khi chờ API dễ bị trình duyệt chặn popup.
+5. *Ẩn phương thức chưa bật* để khách không thấy lựa chọn "chưa khả dụng".
+
+**Trường mới của frontend** (ví dụ mã số thuế, yêu cầu hoá đơn VAT): gửi lên trong
+`createOrder`, lưu qua `columns` ở `prepareOrder` (thêm cột vào `orders`), rồi dùng
+trong `order-success.js` — ví dụ ghi vào `note` của Sales Order.
+
+## 4. Thêm cổng thanh toán khác
 
 Một cổng là một object, khai báo vào `providers` là dùng được:
 
@@ -344,7 +389,7 @@ export function myGatewayProvider() {
 
 `confirmPaid` từ chối nếu số tiền hoặc loại tiền không khớp với đơn đã lưu.
 
-## 4. Lưu ý
+## 5. Lưu ý
 
 - Không bao giờ đặt key/secret trong code frontend hay commit vào git.
 - PayPal trừ phí và có thể giữ tiền (capture `PENDING`); đơn chỉ `PAID` khi capture

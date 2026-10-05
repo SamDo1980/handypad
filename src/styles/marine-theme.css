@@ -211,6 +211,7 @@ h1, h2, h3 { color: var(--hyperion-navy-950); }
 .search-field,
 .concept-filter,
 .shipping-field input,
+.transfer-reference input,
 .contact-sales-field input,
 .contact-sales-field textarea {
   border-color: #9fb6c7;
@@ -219,6 +220,7 @@ h1, h2, h3 { color: var(--hyperion-navy-950); }
 }
 .search-field:focus-within,
 .shipping-field input:focus,
+.transfer-reference input:focus,
 .contact-sales-field input:focus,
 .contact-sales-field textarea:focus {
   border-color: var(--hyperion-navy-800);
@@ -280,8 +282,7 @@ h1, h2, h3 { color: var(--hyperion-navy-950); }
 .order-counts { color: #d0dde6; }
 .order-totals { border-top-color: rgb(255 255 255 / 20%); }
 .order-total-line > span { color: #d1dde5; }
-.summary-shell[data-financial-state='payment'] .order-total-amount,
-.summary-payment .payment-due-row dd { color: var(--hyperion-coral); }
+.summary-shell[data-financial-state='payment'] .order-total-amount { color: var(--hyperion-coral); }
 .summary-next-action {
   background: var(--hyperion-red);
   border-color: var(--hyperion-red);
@@ -311,18 +312,6 @@ h1, h2, h3 { color: var(--hyperion-navy-950); }
   background: #e7edf1;
   border-color: #d0dae1;
 }
-.payment-choice-price,
-.checkout-totals .payment-due-row dd { color: var(--hyperion-red); }
-.payment-method-icon {
-  border-color: var(--hyperion-border-soft);
-  background: #f8fbfd;
-  color: var(--hyperion-navy-800);
-}
-.payment-methods .payment-choice[aria-pressed='true'] .payment-method-icon {
-  border-color: #ffb6a7;
-  background: #fffaf8;
-  color: var(--hyperion-red);
-}
 .country-options { border-color: var(--hyperion-border); }
 .country-option:hover,
 .country-option[aria-selected='true'] { background: var(--hyperion-red-soft); }
@@ -346,19 +335,20 @@ h1, h2, h3 { color: var(--hyperion-navy-950); }
 }
 .payment-modal-due strong { color: #ff947d; }
 
-/* Footer: preserve the existing asset and content; refine contrast and hierarchy only. */
-.site-footer {
+/* Footer band: the ocean asset under a deep navy wash, as on the specs catalogue. */
+.footer-band {
   background-color: var(--hyperion-navy-950);
   background-image:
     linear-gradient(
       180deg,
-      rgba(3,35,56,.94) 0%,
-      rgba(3,35,56,.89) 55%,
-      rgba(3,35,56,.76) 100%
+      rgba(3,35,56,.84) 0%,
+      rgba(3,35,56,.78) 55%,
+      rgba(3,35,56,.70) 100%
     ),
     url('../assets/theme/theme-footer-ocean.jpg');
   background-size: cover;
-  background-position: center;
+  /* The band shows a thin slice of a 3:1 photo: 70% down puts the wave crests in view (the middle is sky). */
+  background-position: 30% 70%;
   color: #d5e0e7;
 }
 

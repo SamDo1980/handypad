@@ -1,236 +1,31 @@
-.site-footer {
-  color: #d5e0e7;
-  padding: 0;
-  border-top: 3px solid var(--hyperion-red, #e63720);
+/* Footer — same as the specs catalogue footer (without its tagline): one navy ocean
+   band (red top line) with a single row of contact links. The band's background image is set in
+   marine-theme.css (.footer-band). */
+.site-footer { padding: 0; }
+
+
+.footer-band { border-top: 3px solid var(--hyperion-red, #e63720); color: #fff; }
+/* Right-aligned: the links sit together at the right edge of the page's .container (same edge as the content above). */
+.footer-links { display: flex; justify-content: flex-end; align-items: center; gap: 12px 40px; padding-block: 36px; }
+/* "Contact:" label directly before the first link, part of the right-aligned group. */
+.footer-title { margin-right: -16px; color: #ff8a73; font-size: 18px; line-height: 1.4; font-weight: 700; white-space: nowrap; }
+
+a.footer-link {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 0; padding: 0;
+  color: #fff; font-size: 18px; line-height: 1.4; font-weight: 600; text-decoration: none; white-space: nowrap;
 }
+a.footer-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+a.footer-link:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-radius: 2px; }
+.footer-link-icon { display: flex; flex: none; width: 24px; height: 24px; color: #ff8a73; }
+.footer-link-icon svg { width: 100%; height: 100%; }
+img.footer-link-icon { border-radius: 5px; }
 
-/* Aligns with the page's .container so the footer lines up with the content above. */
-.footer-inner {
-  padding-block: 40px 20px;
-}
-
-/* Two columns sized to their content: brand + tax code on the left, Contact on the right. */
-.footer-columns {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-between;
-  column-gap: 28px;
-  align-items: start;
-}
-
-.footer-columns > * + * {
-  padding-left: 28px;
-  border-left: 1px solid rgba(255,255,255,.12);
-}
-
-/* The tax code sits under the brand title in the same column. */
-.footer-brand .footer-tax { margin-top: 16px; }
-
-/* At full container width (1200px) every line fits unbroken. */
-@media (min-width: 1296px) {
-  .footer-legal,
-  a.contact-value {
-    white-space: nowrap;
-  }
-}
-
-.footer-brand-title {
-  margin: 0;
-  color: #fff;
-  font-size: 30px;
-  line-height: 1.1;
-  font-weight: 700;
-  letter-spacing: .01em;
-}
-
-.footer-brand-secondary {
-  /* Same line as HANDYPAD; on very narrow screens it wraps as a whole. */
-  display: inline-block;
-  white-space: nowrap;
-  color: var(--hyperion-red, #e63720);
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 0;
-}
-
-.footer-heading {
-  margin: 0 0 12px;
-  color: #ff8a73;
-  font-size: 12px;
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
-
-.footer-legal {
-  margin: 0;
-  color: rgba(255,255,255,.92);
-  font-size: 14px;
-  line-height: 1.5;
-  font-weight: 600;
-}
-
-.footer-legal + .footer-legal {
-  margin-top: 4px;
-}
-
-.footer-tax {
-  margin: 8px 0 0;
-  font-size: 14px;
-  line-height: 1.45;
-}
-
-.tax-label {
-  color: rgba(255,255,255,.62);
-  font-weight: 500;
-}
-
-.tax-value {
-  color: rgba(255,255,255,.92);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-
-.footer-contact-groups {
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  font-style: normal;
-}
-
-.contact-group {
-  display: grid;
-  grid-template-columns: 18px minmax(0, 1fr);
-  column-gap: 10px;
-  align-items: start;
-  margin: 0;
-}
-
-.contact-group > .icon {
-  display: flex;
-  width: 18px;
-  height: 18px;
-  margin-top: 2px;
-  color: #ff8a73;
-}
-
-.contact-group > .icon svg {
-  width: 100%;
-  height: 100%;
-}
-
-.contact-body {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 10px;
-  min-width: 0;
-}
-
-a.contact-value {
-  min-height: 0;
-  padding: 0;
-  color: rgba(255,255,255,.92);
-  font-size: 14px;
-  line-height: 1.5;
-  font-weight: 400;
-  text-decoration: none;
-  overflow-wrap: anywhere;
-}
-
-a.contact-value:hover {
-  color: #fff;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.contact-chat-links {
-  display: inline-flex;
-  gap: 6px;
-}
-
-a.contact-chat-link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  padding: 2px 10px;
-  border: 1px solid rgba(255,255,255,.28);
-  border-radius: 999px;
-  color: #fff;
-  font-size: 12px;
-  line-height: 1.2;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-a.contact-chat-link:hover {
-  border-color: #fff;
-  background: rgba(255,255,255,.1);
-}
-
-a.contact-value:focus-visible,
-a.contact-chat-link:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 2px;
-}
-
-.footer-copyright {
-  margin: 28px 0 0;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255,255,255,.12);
-  color: rgba(255,255,255,.6);
-  font-size: 12px;
-  line-height: 1.4;
-  font-weight: 400;
-  text-align: center;
-}
-
+/* Tablets: still right-aligned, closer together so all five stay on one row. Phones: centred wrapped rows. */
 @media (max-width: 1023px) {
-  .footer-columns {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 28px 32px;
-  }
-
-  .footer-columns > * + * {
-    padding-left: 0;
-    border-left: 0;
-  }
-
-  .footer-columns > .footer-contact {
-    padding-left: 32px;
-    border-left: 1px solid rgba(255,255,255,.12);
-  }
+  .footer-links { flex-wrap: wrap; column-gap: 20px; }
+  .footer-title { display: none; } /* no spare room beside the links below 1024px */
 }
-
-@media (max-width: 640px) {
-  .footer-inner {
-    padding-block: 32px 20px;
-  }
-
-  .footer-columns {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .footer-columns > .footer-contact {
-    padding-left: 0;
-    border-left: 0;
-  }
-
-  .footer-columns > .footer-contact {
-    padding-top: 20px;
-    border-top: 1px solid rgba(255,255,255,.12);
-  }
-
-  a.contact-chat-link {
-    min-height: 32px;
-    padding: 4px 12px;
-  }
-}
-
-/* Keep "HANDYPAD by DLV CORPORATION" on one line on the smallest phones. */
-@media (max-width: 400px) {
-  .footer-brand-title { font-size: 26px; }
-  .footer-brand-secondary { font-size: 14px; }
+@media (max-width: 767px) {
+  .footer-links { justify-content: center; gap: 16px 24px; padding-block: 32px; }
+  a.footer-link { min-height: 32px; } /* comfortable tap target */
 }
