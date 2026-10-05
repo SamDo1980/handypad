@@ -1,11 +1,3 @@
-export async function onRequestGet({ params, env }) {
-  const { id } = params;
-  const row = await env.DB.prepare(`SELECT id, method, amount, status, created_at, updated_at FROM orders WHERE id = ?`)
-    .bind(id)
-    .first();
+import { payments } from "../../_lib/payments.js";
 
-  if (!row) {
-    return Response.json({ error: "Không tìm thấy đơn hàng" }, { status: 404 });
-  }
-  return Response.json(row);
-}
+export const onRequestGet = payments.orderStatus;

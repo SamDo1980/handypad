@@ -1,0 +1,17 @@
+/* Shared light-section heading: eyebrow → H2 → intro (Hyperion "Built for…" pattern). */
+.section-eyebrow { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; color: #d8321c; font-size: var(--text-sm); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.section-eyebrow::before { content: ''; width: 48px; height: 2px; flex: 0 0 48px; background: linear-gradient(90deg, #e63720 0 58%, #f7b29f 58% 100%); }
+.section-title { max-width: 680px; color: var(--hyperion-navy-950, #06263d); font-size: clamp(32px, 3.4vw, 48px); font-weight: 800; line-height: 1.08; letter-spacing: -.035em; text-wrap: balance; }
+.section-title:focus { outline: none; }
+.section-intro { max-width: 640px; margin-top: 16px; color: #53678e; font-size: var(--text-lg); line-height: 1.5; text-wrap: pretty; }
+.section-heading { margin-bottom: 32px; }
+.shop-section { padding-block: 64px 48px; }
+.shop-section .shopping-layout { margin-top: 0; margin-bottom: 0; }
+.shop-section .configurator { margin-bottom: 0; padding-top: 0; border-top: 0; }
+@media (max-width: 767px) {
+  .section-eyebrow::before { width: 34px; flex-basis: 34px; }
+  .section-title { font-size: clamp(28px, 8.4vw, 36px); }
+  .section-intro { font-size: var(--text-base); }
+  .section-heading { margin-bottom: 24px; }
+  .shop-section { padding-block: 48px 32px; }
+}

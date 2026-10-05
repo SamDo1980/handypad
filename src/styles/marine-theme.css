@@ -1,0 +1,380 @@
+/*
+  Handyman marine visual layer (shared with HYPERION).
+  IMPORTANT: this file is visual-only. Do not use it to remove, rename, reorder,
+  or disable existing CTA, workflow, data, cart, checkout, validation, or locale logic.
+  Approved reference screenshots guide visual treatment only; existing functionality wins.
+*/
+
+:root {
+  --hyperion-navy-950: #06263d;
+  --hyperion-navy-900: #082d49;
+  --hyperion-navy-800: #0d3a5a;
+  --hyperion-blue-100: #eaf5fb;
+  --hyperion-blue-50: #f4f9fc;
+  --hyperion-surface: #fbfdfe;
+  --hyperion-page: #f3f7f9;
+  --hyperion-text: #092c46;
+  --hyperion-text-muted: #60788b;
+  --hyperion-border: #cbd9e3;
+  --hyperion-border-soft: #dce6ed;
+  --hyperion-red: #e63720;
+  --hyperion-red-hover: #c92e1b;
+  --hyperion-red-soft: #fff2ee;
+  --hyperion-coral: #ff7058;
+  --hyperion-shadow: 0 10px 28px rgb(5 39 62 / 9%);
+
+  /* Map the established Phase 16 tokens onto the approved marine palette. */
+  --navy: var(--hyperion-navy-800);
+  --navy-dark: var(--hyperion-navy-950);
+  --accent: var(--hyperion-red);
+  --accent-action: var(--hyperion-red);
+  --accent-dark: var(--hyperion-red-hover);
+  --accent-soft: var(--hyperion-red-soft);
+  --background: var(--hyperion-page);
+  --surface: #fff;
+  --text: var(--hyperion-text);
+  --muted: var(--hyperion-text-muted);
+  --line: var(--hyperion-border);
+  --shadow: var(--hyperion-shadow);
+}
+
+body {
+  background: linear-gradient(180deg, rgba(244, 249, 252, .96), rgba(248, 251, 253, .99));
+  color: var(--hyperion-text);
+}
+
+h1, h2, h3 { color: var(--hyperion-navy-950); }
+
+/* Header: preserve all current nav items and CONTACT SALES, only migrate visuals. */
+.site-header {
+  background-color: #eef8ff;
+  background-image:
+    linear-gradient(rgba(255,255,255,.12), rgba(255,255,255,.12)),
+    url('../assets/theme/theme-header-sky.jpg');
+  background-size: cover;
+  background-position: center;
+  border-bottom: 2px solid var(--hyperion-red);
+  box-shadow: 0 2px 12px rgb(6 38 61 / 5%);
+}
+.header-section-link,
+.header-lookup { color: var(--hyperion-navy-950); }
+.header-section-link:hover,
+.header-lookup:hover { color: var(--hyperion-red-hover); }
+.language-switch {
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--hyperion-border);
+  border-radius: 7px;
+  background: rgba(255,255,255,.92);
+}
+.language-option {
+  width: 44px;
+  height: 44px;
+  border-radius: 0;
+  color: var(--hyperion-navy-950);
+  background: transparent;
+  box-shadow: none;
+}
+.language-option + .language-option { border-left: 1px solid var(--hyperion-border); }
+.language-option[aria-pressed='true'] {
+  background: var(--hyperion-navy-950);
+  color: #fff;
+  box-shadow: none;
+}
+.language-option:hover:not([aria-pressed='true']) {
+  background: rgba(255,255,255,.78);
+  color: var(--hyperion-navy-950);
+}
+.header-contact-sales {
+  min-height: 44px;
+  border-color: #6f8799;
+  border-radius: 7px;
+  background: var(--hyperion-navy-950);
+  color: #fff;
+  box-shadow: 0 6px 16px rgb(6 38 61 / 10%);
+}
+.header-contact-sales:hover {
+  border-color: var(--hyperion-red);
+  background: var(--hyperion-navy-800);
+}
+.header-menu {
+  border-color: var(--hyperion-border);
+  background: rgba(255,255,255,.92);
+  color: var(--hyperion-navy-950);
+}
+
+/* Hero: product photo (subject on the right) under the fixed navy overlay. */
+.hero {
+  border-top: 0;
+  background-color: var(--hyperion-navy-950);
+  background-image:
+    linear-gradient(90deg, rgba(4,33,53,.86) 0%, rgba(4,33,53,.70) 38%, rgba(4,33,53,.30) 68%, rgba(4,33,53,.08) 100%),
+    url('../assets/products/handypad/hero.jpg');
+  background-size: cover;
+  background-position: right center;
+}
+@media (max-width: 640px) {
+  /* Headline spans the full width on phones, so darken the whole photo evenly. */
+  .hero {
+    background-image:
+      linear-gradient(180deg, rgba(4,33,53,.84) 0%, rgba(4,33,53,.74) 100%),
+      url('../assets/products/handypad/hero.jpg');
+  }
+}
+.hero-inner { min-height: 270px; }
+.hero h1 { color: #fff; }
+.hero-title-second { color: #c7ddea; }
+.eyebrow { color: #ffc0b3; }
+
+/* Shared clean technical surfaces. No structural re-layout. */
+.lookup-panel,
+.group-selector,
+.configuration-step,
+.result-card,
+.search-empty,
+.contact-sales-card {
+  background: rgba(255,255,255,.96);
+  border-color: var(--hyperion-border-soft);
+  border-radius: 8px;
+  box-shadow: 0 7px 20px rgb(6 38 61 / 5.5%);
+}
+.lookup-panel { border-top-color: var(--hyperion-red); }
+.configurator,
+.results-grid,
+.search-family,
+.grouped-result + .grouped-result,
+.edition-controls,
+.shipping-fee,
+.checkout-totals:not(:empty) { border-color: var(--hyperion-border-soft); }
+
+.step-number {
+  background: var(--hyperion-navy-950);
+  color: #fff;
+  border-radius: 4px;
+}
+.configuration-step[data-state='current'] .step-number,
+.group-selector[data-state='current'] .step-number,
+#order-payment:not([data-state='locked']) > legend .step-number {
+  background: var(--hyperion-red);
+}
+.configuration-step[data-state='locked'] {
+  border-color: var(--hyperion-border-soft);
+  background: #edf3f7;
+}
+.configuration-step[data-state='locked'] .step-number { background: #728596; }
+/* Compact upcoming steps: the next locked step stays a card explaining what unlocks it;
+   later ones collapse to a quiet title row (message kept for screen readers). */
+.configuration-step[data-state='locked'] { min-height: 0; padding-block: 2px; border-color: transparent; background: transparent; box-shadow: none; }
+.configuration-step[data-state='locked'] .locked-message {
+  position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.configuration-step[data-state='locked']:first-child,
+.configuration-step:not([data-state='locked']) + .configuration-step[data-state='locked'] {
+  padding-block: 8px 12px; border-color: var(--hyperion-border-soft); background: #edf3f7;
+}
+.configuration-step[data-state='locked']:first-child .locked-message,
+.configuration-step:not([data-state='locked']) + .configuration-step[data-state='locked'] .locked-message {
+  position: static; width: auto; height: auto; margin: 0; overflow: visible; clip-path: none; white-space: normal;
+}
+
+/* Unified selected state across the current components. */
+.group-option[aria-pressed='true'],
+.sign-option[aria-pressed='true'],
+.attribute-option[aria-pressed='true'],
+.size-matrix button[aria-pressed='true']:not(:disabled),
+.payment-choice[aria-pressed='true'] {
+  border-color: var(--hyperion-red);
+  background: var(--hyperion-red-soft);
+  box-shadow: inset 0 0 0 1px var(--hyperion-red);
+}
+.group-option[aria-pressed='true'] .group-marker {
+  background: var(--hyperion-red);
+  border-color: var(--hyperion-red);
+}
+.option-check { color: var(--hyperion-red); }
+.group-option,
+.sign-option,
+.attribute-option,
+.size-matrix .attribute-option {
+  border-color: var(--hyperion-border);
+  background: #fff;
+  color: var(--hyperion-navy-950);
+}
+.size-matrix button:disabled {
+  background: #dfe7ec;
+  border-color: #c3cfd8;
+  color: #71818e;
+}
+
+/* Search stays compact and catalogue-like. */
+.search-field,
+.concept-filter,
+.shipping-field input,
+.contact-sales-field input,
+.contact-sales-field textarea {
+  border-color: #9fb6c7;
+  border-radius: 4px;
+  background: #fff;
+}
+.search-field:focus-within,
+.shipping-field input:focus,
+.contact-sales-field input:focus,
+.contact-sales-field textarea:focus {
+  border-color: var(--hyperion-navy-800);
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(13 58 90 / 8%);
+}
+.lookup .results-grid {
+  border-color: var(--hyperion-border-soft);
+  background: rgba(255,255,255,.96);
+}
+.lookup .result-card,
+.lookup .grouped-result,
+.search-family { border-color: var(--hyperion-border-soft); }
+.lookup .result-card { background: rgba(255,255,255,.96); }
+.result-reference,
+.result-impa { font-variant-numeric: tabular-nums; }
+
+/* Buttons: existing labels/actions preserved. */
+.button-primary,
+.search-submit,
+.add-to-cart,
+.payment-cta,
+.contact-sales-submit {
+  background: var(--hyperion-red);
+  border-color: var(--hyperion-red);
+  color: #fff;
+}
+.button-primary:hover,
+.search-submit:hover,
+.add-to-cart:hover:not(:disabled),
+.payment-cta:hover:not(:disabled),
+.contact-sales-submit:hover {
+  background: var(--hyperion-red-hover);
+  border-color: var(--hyperion-red-hover);
+}
+
+/* Sticky Order Summary: keep component behavior/placement/CTA intact. */
+.summary-shell {
+  border: 1px solid #274e69;
+  border-top: 3px solid var(--hyperion-red);
+  border-radius: 14px;
+  background-color: var(--hyperion-navy-950);
+  background-image:
+    linear-gradient(rgba(4,37,60,.34), rgba(4,37,60,.25)),
+    url('../assets/theme/theme-summary-ocean.jpg');
+  background-size: cover;
+  background-position: center bottom;
+  box-shadow: 0 18px 38px rgb(7 39 62 / 18%);
+}
+@supports selector(.summary-shell:has(.order-row:nth-child(4))) {
+  .summary-shell:has(.order-row:nth-child(4)) {
+    background-image:
+      linear-gradient(rgba(4,37,60,.32), rgba(4,37,60,.22)),
+      url('../assets/theme/theme-summary-ocean-tall.jpg');
+  }
+}
+.summary-header h3,
+.summary-close { color: #fff; }
+.order-counts { color: #d0dde6; }
+.order-totals { border-top-color: rgb(255 255 255 / 20%); }
+.order-total-line > span { color: #d1dde5; }
+.summary-shell[data-financial-state='payment'] .order-total-amount,
+.summary-payment .payment-due-row dd { color: var(--hyperion-coral); }
+.summary-next-action {
+  background: var(--hyperion-red);
+  border-color: var(--hyperion-red);
+  color: #fff;
+}
+.summary-next-action:hover { background: var(--hyperion-red-hover); border-color: var(--hyperion-red-hover); }
+.mobile-summary-bar {
+  background: var(--hyperion-navy-950);
+  border-top-color: var(--hyperion-border);
+}
+
+/* Contact & Shipping + Payment: visual refinement only. */
+#contact-shipping:not([data-state='locked']),
+#order-payment:not([data-state='locked']) {
+  background: rgba(255,255,255,.96);
+  border-color: var(--hyperion-border-soft);
+  border-radius: 8px;
+  box-shadow: 0 7px 20px rgb(6 38 61 / 5.5%);
+}
+.payment-choice {
+  border-color: var(--hyperion-border);
+  background: #fff;
+  color: var(--hyperion-navy-950);
+}
+.payment-choice:hover:not(:disabled) { border-color: #8298a8; }
+.payment-choice:disabled {
+  background: #e7edf1;
+  border-color: #d0dae1;
+}
+.payment-choice-price,
+.checkout-totals .payment-due-row dd { color: var(--hyperion-red); }
+.payment-method-icon {
+  border-color: var(--hyperion-border-soft);
+  background: #f8fbfd;
+  color: var(--hyperion-navy-800);
+}
+.payment-methods .payment-choice[aria-pressed='true'] .payment-method-icon {
+  border-color: #ffb6a7;
+  background: #fffaf8;
+  color: var(--hyperion-red);
+}
+.country-options { border-color: var(--hyperion-border); }
+.country-option:hover,
+.country-option[aria-selected='true'] { background: var(--hyperion-red-soft); }
+
+/* Existing modals/CONTACT SALES are not in every mockup; retain them and theme them. */
+.contact-sales-modal::backdrop,
+.payment-modal::backdrop { background: rgb(3 19 33 / 74%); }
+.contact-sales-card {
+  border-top-color: var(--hyperion-red);
+  border-radius: 10px;
+}
+.contact-sales-close {
+  border-color: var(--hyperion-border);
+  color: var(--hyperion-navy-950);
+}
+.payment-modal {
+  border-color: #446078;
+  border-top-color: var(--hyperion-red);
+  border-radius: 12px;
+  background: var(--hyperion-navy-950);
+}
+.payment-modal-due strong { color: #ff947d; }
+
+/* Footer: preserve the existing asset and content; refine contrast and hierarchy only. */
+.site-footer {
+  background-color: var(--hyperion-navy-950);
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(3,35,56,.94) 0%,
+      rgba(3,35,56,.89) 55%,
+      rgba(3,35,56,.76) 100%
+    ),
+    url('../assets/theme/theme-footer-ocean.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #d5e0e7;
+}
+
+@media (max-width: 999px) {
+  .header-nav-links {
+    background-color: rgba(255,255,255,.97);
+    background-image: linear-gradient(rgba(255,255,255,.12), rgba(255,255,255,.12)), url('../assets/theme/theme-header-sky.jpg');
+    background-size: cover;
+    border-color: var(--hyperion-border);
+  }
+}
+
+@media (max-width: 767px) {
+  .summary-shell {
+    background-image:
+      linear-gradient(rgba(4,37,60,.34), rgba(4,37,60,.25)),
+      url('../assets/theme/theme-summary-ocean-tall.jpg');
+  }
+}

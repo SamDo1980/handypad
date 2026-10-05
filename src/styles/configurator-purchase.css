@@ -1,0 +1,30 @@
+﻿.edition-purchase .edition-identity { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--space-5); align-items: center; }
+.edition-preview { min-width: 0; }
+.edition-purchase .product-image { width: 100%; height: 280px; padding: var(--space-3); }
+.edition-purchase .product-image img { object-fit: contain; }
+.edition-details { display: grid; gap: var(--space-4); min-width: 0; }
+.edition-purchase .result-title { font-size: var(--text-lg); margin-bottom: 8px; }
+.edition-purchase .result-reference { overflow-wrap: anywhere; }
+.edition-purchase .dimensions { font-size: var(--text-sm); }
+.edition-purchase .attribute-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.edition-purchase .attribute-option { min-width: 0; padding: 10px 8px; }
+/* Unit price and quantity share a row; the CTA spans the detail column. */
+.edition-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-4); align-items: end; border-top: 1px solid var(--line); padding-top: var(--space-4); }
+.edition-controls .price-label { display: block; margin-bottom: 6px; }
+.edition-controls .result-price strong { display: flex; align-items: center; min-height: 46px; font-size: 22px; color: var(--navy); line-height: 1.15; }
+.edition-controls .edition-quantity { min-width: 0; }
+.edition-controls .add-to-cart { grid-column: 1 / -1; min-height: 46px; white-space: nowrap; }
+.edition-controls .add-to-cart:disabled { opacity: .55; cursor: not-allowed; }
+.edition-feedback { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; min-height: 20px; margin-top: -8px; color: #008548; font-size: var(--text-sm); line-height: 1.25; }
+.edition-feedback .icon { width: 18px; height: 18px; flex: 0 0 18px; padding: 2px; border-radius: 50%; background: currentColor; }
+.edition-feedback .icon svg { color: white; }
+/* Stack by available checkout-column width; retain a large mobile preview. */
+@container (max-width: 620px) {
+  .edition-purchase .edition-identity { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  .edition-purchase .product-image { height: 240px; }
+}
+@media (max-width: 480px) {
+  .edition-purchase .product-image { height: 220px; }
+  .edition-controls { gap: var(--space-3); }
+  .edition-controls .result-price strong { font-size: var(--text-lg); }
+}

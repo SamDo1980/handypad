@@ -2,7 +2,8 @@ CREATE TABLE IF NOT EXISTS orders (
   id TEXT PRIMARY KEY,
   method TEXT NOT NULL,
   payment_type TEXT NOT NULL DEFAULT 'full',
-  amount INTEGER NOT NULL,
+  amount INTEGER NOT NULL,           -- amount charged, in `currency` (VND: ZaloPay, USD: PayPal)
+  currency TEXT NOT NULL DEFAULT 'VND',
   amount_usd REAL,
   fx_rate REAL,
   order_total_vnd INTEGER,
@@ -23,6 +24,7 @@ CREATE TABLE IF NOT EXISTS orders (
 
 CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
 CREATE INDEX IF NOT EXISTS idx_orders_payment_type ON orders(payment_type);
+CREATE INDEX IF NOT EXISTS idx_orders_provider_trans_id ON orders(provider_trans_id);
 
 CREATE TABLE IF NOT EXISTS order_counters (
   prefix TEXT PRIMARY KEY,

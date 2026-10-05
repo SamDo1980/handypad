@@ -4,8 +4,5 @@
   "private": true,
   "scripts": {
     "dev": "node dev-server/server.js"
-  },
-  "dependencies": {
-    "worker-mailer": "^1.2.1"
   }
 }

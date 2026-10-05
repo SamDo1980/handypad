@@ -1,5 +1,10 @@
 # HANDYPAD landing + real payment integration
 
+> **Outdated below.** Payment is now ZaloPay + PayPal only (Stripe and bank
+> transfer were removed) and lives in the reusable `payment-kit/` folder. See
+> [README-payment-backend.md](README-payment-backend.md) for the current setup
+> and [payment-kit/README.md](payment-kit/README.md) for the integration guide.
+
 This is `handypad-landing` with the payment backend from `payment-demo` wired
 into its existing "Configure & Order" checkout flow. The landing page design,
 copy, and layout are unchanged — only the payment plumbing changed from a

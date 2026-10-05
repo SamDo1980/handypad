@@ -1,0 +1,79 @@
+/* Why HANDYPAD — Shopify-style story: a paragraph of three sentences over a draggable photo strip.
+   Each sentence owns a set of three uncropped photos; the lit sentence matches the set in view.
+   Spec: hyperion-imo-signs/docs/landing-page-template.md §1.2 (Story section). */
+.feature-section {
+  position: relative; overflow: hidden; padding-block: 96px;
+  background: #f8fbfe url('../assets/theme/theme-feature-sea.jpg') center bottom / cover no-repeat;
+}
+
+.story-text { margin: 0; font-size: 32px; font-weight: 700; line-height: 1.3; letter-spacing: -.02em; text-wrap: pretty; } /* full page width, like the photo strip */
+/* Shopify-style sentences: muted grey; hovering fades in a red→orange gradient (the grey turns
+   transparent over the clipped gradient); the lit (active) sentence is solid navy. */
+.story-phrase {
+  color: #9fb0bf; cursor: pointer; transition: color .3s ease;
+  background: linear-gradient(90deg, #e63720, #f7931e); -webkit-background-clip: text; background-clip: text;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; /* gradient per line when a sentence wraps */
+}
+.story-phrase:hover, .story-phrase:focus-visible { color: rgb(159 176 191 / 0); }
+.story-phrase.is-active { color: var(--hyperion-navy-950, #06263d); }
+.story-phrase:focus-visible { outline: 3px solid #2871b7; outline-offset: 2px; border-radius: 4px; }
+
+#why-handypad .container { container-type: inline-size; }
+/* One tile height for all sets: the widest set fills the width exactly at its photos' own shapes. */
+.story-strip {
+  --story-h: calc((100cqw - 32px) / var(--max-ratio, 4));
+  position: relative; margin-top: 32px; overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity; scrollbar-width: none; cursor: grab;
+  user-select: none; -webkit-user-select: none;
+}
+.story-strip::-webkit-scrollbar { display: none; }
+.story-strip.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+.story-strip.is-gliding { scroll-snap-type: none; }
+.story-strip:focus-visible { outline: 3px solid #2871b7; outline-offset: 4px; border-radius: 8px; }
+.story-strip img { pointer-events: none; -webkit-user-drag: none; }
+.story-track, .story-set { display: flex; gap: 16px; }
+.story-track { width: max-content; padding-bottom: 12px; /* room for tile shadows */ }
+/* Each set spans the strip width, so the next set never peeks in. In a narrower set every tile grows by
+   the same amount (16px gaps kept; photos trim a little top/bottom), so every set ends at the right edge. */
+.story-set { flex: none; min-width: 100cqw; scroll-snap-align: start; }
+.story-set .feature-tile { flex: 1 1 auto; }
+
+.feature-tile {
+  position: relative; flex: none; height: var(--story-h); border-radius: 8px; overflow: hidden;
+  background: #fff; box-shadow: 0 8px 24px rgb(6 38 61 / 8%);
+}
+.feature-photo, .feature-tile-slogan { position: absolute; inset: 0; width: 100%; height: 100%; transition: opacity .3s ease; }
+.feature-photo { object-fit: cover; }
+/* The transparent cut-out sits on a soft studio backdrop. */
+.story-tile--cutout { background: radial-gradient(120% 70% at 50% 50%, #fff 0%, #e6edf3 100%); }
+.story-tile--cutout .feature-photo { object-fit: contain; } /* never trim the product itself */
+/* Slogan picture on white, whole slogan always visible; hidden until hover (or tap on touch). */
+.feature-tile-slogan { padding: 6%; object-fit: contain; background: #fff; opacity: 0; }
+.feature-tile.is-revealed .feature-tile-slogan { opacity: 1; }
+@media (hover: hover) {
+  .story-strip:not(.is-dragging) .feature-tile:hover .feature-tile-slogan { opacity: 1; }
+}
+
+.feature-section-link {
+  display: inline-flex; align-items: center; gap: 20px; margin-top: 20px; padding: 4px 0 8px;
+  border-bottom: 1px solid #0a2451; color: #0a2451; font-size: var(--text-base); font-weight: 800; text-decoration: none;
+  transition: color .15s ease, border-color .15s ease;
+}
+.feature-section-link:hover { color: #e63720; border-bottom-color: #e63720; }
+.feature-section-link-arrow { font-size: 1.25em; line-height: 1; }
+
+@media (max-width: 1279px) {
+  .story-text { font-size: 28px; }
+}
+@media (max-width: 1023px) {
+  .feature-section { padding-block: 64px; }
+  .story-strip { --story-h: 260px; } /* tablets: fixed height, drag through the photos */
+}
+@media (max-width: 767px) {
+  .feature-section { padding-block: 48px; background-size: auto 100%; }
+  .story-text { font-size: 22px; }
+  .story-break { display: none; } /* phones: let the paragraph wrap naturally */
+  .story-strip { margin-top: 24px; }
+  .story-strip { --story-h: 240px; }
+  .story-track, .story-set { gap: 12px; }
+}
