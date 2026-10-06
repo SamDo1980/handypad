@@ -30,3 +30,19 @@ export function createPaymentClient({ apiBase = null, fetcher = globalThis.fetch
     getOrderStatus: orderId => request(`/order-status/${encodeURIComponent(orderId)}`)
   };
 }
+
+export function openPaymentPopup(url = 'about:blank', { width = 520, height = 760 } = {}) {
+  const left = Math.max(0, Math.round(window.screenX + (window.outerWidth - width) / 2));
+  const top = Math.max(0, Math.round(window.screenY + (window.outerHeight - height) / 2));
+  const popup = window.open(url, 'payment-kit-gateway', `popup=yes,width=${width},height=${height},left=${left},top=${top}`);
+  popup?.focus();
+  return popup;
+}
+
+export function onPaymentReturn(listener) {
+  try {
+    const channel = new BroadcastChannel('payment-kit');
+    channel.onmessage = event => { if (event.data?.type === 'payment-return') listener(event.data.outcome); };
+    return () => channel.close();
+  } catch { return () => {}; }
+}

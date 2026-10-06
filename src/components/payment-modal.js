@@ -2,15 +2,21 @@ import { element } from '../lib/dom.js';
 import { t } from '../lib/locale.js';
 import { formatPrice } from '../lib/storefront.js';
 import { formatCardNumber, formatExpiry, validateCard, paymentErrorMessage } from '../checkout/card-validation.js';
-import { secureURL } from '../checkout/payment-service.js';
+import { secureURL, openPaymentPopup, onPaymentReturn } from '../checkout/payment-service.js';
 import { bankTransferConfig } from '../checkout/bank-transfer-config.js';
 
 export function createPaymentModal(checkout) {
   const dialog = element('dialog', 'payment-modal'); dialog.setAttribute('aria-labelledby', 'payment-modal-title');
-  let opener, previousOverflow, method, update = () => {}, clear = () => {}, gatewayWindow = null, gatewayTimer;
+  let opener, previousOverflow, method, update = () => {}, clear = () => {}, gatewayWindow = null, gatewayTimer, returnFailed = false;
   function close() { if (dialog.open) dialog.close(); }
   dialog.addEventListener('click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) close(); } });
   dialog.addEventListener('close', () => { clear(); dialog.replaceChildren(); clearInterval(gatewayTimer); gatewayWindow = null; document.body.style.overflow = previousOverflow; if (opener?.isConnected && !opener.disabled) opener.focus(); });
+  // The payment popup came back from the gateway (and closes itself): recheck the order right away.
+  onPaymentReturn(outcome => {
+    gatewayWindow?.close(); gatewayWindow = null; clearInterval(gatewayTimer);
+    returnFailed = outcome === 'failed';
+    checkout.checkStatus().then(() => update(checkout.getState()));
+  });
   checkout.subscribe(state => { if (!dialog.open) return; if (!state.canPay || state.order.payment.method !== method) close(); else update(state); });
   function open(trigger) {
     const state = checkout.getState(); if (!state.canPay) return;
@@ -40,15 +46,16 @@ export function createPaymentModal(checkout) {
       }
       return errors;
     }
-    // Open the window during the click so popup blockers allow it, then point it at the gateway.
+    // Open the popup during the click so popup blockers allow it, then point it at the gateway.
     async function openGateway() {
       const existing = secureURL(checkout.getState().checkoutURL);
-      gatewayWindow = window.open(existing ?? 'about:blank', '_blank');
+      returnFailed = false;
+      gatewayWindow = openPaymentPopup(existing ?? 'about:blank');
       if (!existing) await checkout.startPayment();
       const url = secureURL(checkout.getState().checkoutURL);
       if (!url) { gatewayWindow?.close(); gatewayWindow = null; return; }
       if (gatewayWindow) { gatewayWindow.opener = null; if (!existing) gatewayWindow.location.href = url; }
-      clearInterval(gatewayTimer); gatewayTimer = setInterval(() => { if (gatewayWindow?.closed) { clearInterval(gatewayTimer); update(checkout.getState()); } }, 500);
+      clearInterval(gatewayTimer); gatewayTimer = setInterval(() => { if (gatewayWindow?.closed) { clearInterval(gatewayTimer); gatewayWindow = null; checkout.checkStatus().then(() => update(checkout.getState())); } }, 500);
     }
     if (method === 'card' && simulation) {
       const brands = element('div', 'payment-card-logos');
@@ -158,7 +165,7 @@ export function createPaymentModal(checkout) {
       const p = current.order.payment, pending = simulation ? ['pending','awaiting_confirmation'].includes(current.simulationStatus) : ['pending','awaiting_confirmation'].includes(p.status);
       dueLabel.textContent = t('Amount due now'); dueValue.textContent = formatPrice(p.amountDueNow,current.order.currency);
       formError.textContent = current.error ? t(paymentErrorMessage(current.error)) : ''; formError.hidden = !current.error;
-      status.textContent = current.busy ? t('Processing…') : p.status === 'confirmed' ? t('Payment confirmed') : method === 'bank_transfer' && pending ? t('Waiting for transfer confirmation') : pending ? t('Waiting for payment confirmation') : '';
+      status.textContent = current.busy ? t('Processing…') : p.status === 'confirmed' ? t('Payment confirmed') : method === 'bank_transfer' && pending ? t('Waiting for transfer confirmation') : pending && returnFailed ? t('Payment was not completed. You can try again.') : pending ? t('Waiting for payment confirmation') : '';
       action.textContent = t(current.busy ? 'Processing…' : method === 'zalopay' ? pending ? 'Reopen payment window' : 'Open payment window' : method === 'paypal' ? pending && !simulation ? 'Reopen payment window' : 'Continue to PayPal' : method === 'bank_transfer' ? 'View bank transfer details' : 'Pay');
       action.disabled = current.busy || p.status === 'confirmed' || (method !== 'zalopay' && !(method === 'paypal' && !simulation) && pending);
       for (const field of fields.values()) field.input.readOnly = current.busy || pending || p.status === 'confirmed';

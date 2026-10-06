@@ -6,6 +6,7 @@ import { handlePaymentSuccess } from "./order-success.js";
 export const payments = createPaymentKit({
   providers: { zalopay: zalopayProvider(), paypal: paypalProvider() },
   returnPath: "/#order-payment",
+  returnPagePath: "/api/payment-return",
   nextOrderId,
   onPaid: handlePaymentSuccess,
 

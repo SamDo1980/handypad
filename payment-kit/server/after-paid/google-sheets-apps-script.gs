@@ -1,6 +1,3 @@
-// Paste into the target Google Sheet: Extensions > Apps Script, then
-// Deploy > New deployment > Web app (Execute as: Me, Who has access: Anyone).
-// Put the Web app URL in GOOGLE_SHEETS_WEBHOOK_URL.
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
@@ -11,19 +8,17 @@ function doPost(e) {
     }
 
     if (Array.isArray(data.row)) {
-      // Generic form: { row: [...] } — the project decides the columns.
       sheet.appendRow([new Date()].concat(data.row));
     } else {
-      // Named-field form (HANDYPAD's columns).
       sheet.appendRow([
         new Date(),
         data.orderId || "",
         data.method || "",
         data.paymentType || "",
-        data.amount || "",            // tổng đơn hàng (VND)
-        data.amountUsd || "",         // số USD đã thu, chỉ có với đơn PayPal
+        data.amount || "",
+        data.amountUsd || "",
         data.fxRate || "",
-        data.status || "",            // trạng thái thanh toán thật, luôn là PAID tại đây
+        data.status || "",
         data.customerName || "",
         data.customerEmail || "",
         data.customerPhone || "",

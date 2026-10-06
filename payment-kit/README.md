@@ -96,6 +96,8 @@ export const payments = createPaymentKit({
 
   // Trang khách quay về sau khi rời cổng thanh toán.
   returnPath: "/#order-payment",
+  // Trang mà cửa sổ popup thanh toán quay về: báo cho trang mua hàng rồi tự đóng.
+  returnPagePath: "/api/payment-return",
 
   // Sinh mã đơn, ví dụ "ORD000001".
   nextOrderId: async (env) => `ORD${Date.now()}`,
@@ -192,6 +194,7 @@ Thêm bước riêng (gửi Telegram, gọi API khác...) chỉ cần một obje
 | `functions/api/webhook/zalopay.js` | `export const onRequestPost = payments.webhook("zalopay");` |
 | `functions/api/webhook/paypal.js` | `export const onRequestPost = payments.webhook("paypal");` |
 | `functions/api/paypal/return.js` | `export const onRequestGet = payments.customerReturn("paypal");` |
+| `functions/api/payment-return.js` | `export const onRequestGet = payments.returnPage;` |
 
 Mỗi file thêm dòng `import { payments } from "<đường dẫn>/_lib/payments.js";` ở đầu.
 
@@ -252,13 +255,13 @@ chế độ Live và đổi cả 3 secret, cùng `PAYPAL_ENV = "live"`.
 ### Bước 8 — Frontend
 
 ```js
-import { createPaymentClient, secureURL } from './payment-kit/client/payment-client.js';
+import { createPaymentClient, secureURL, openPaymentPopup, onPaymentReturn } from './payment-kit/client/payment-client.js';
 
 const client = createPaymentClient({ apiBase: '/api' });
 
 payButton.addEventListener('click', async () => {
   // Mở cửa sổ NGAY trong sự kiện click để trình duyệt không chặn popup.
-  const gateway = window.open('about:blank', '_blank');
+  const gateway = openPaymentPopup(); // cửa sổ popup nhỏ, căn giữa màn hình
   try {
     const order = await client.createOrder({ method: 'paypal', items: cart, customerEmail });
     gateway.opener = null;
@@ -278,6 +281,22 @@ function waitUntilPaid(orderId) {
   }, 4000);
 }
 ```
+
+Cổng thanh toán mở trong **cửa sổ popup**. Thanh toán xong (hoặc huỷ), cổng đưa
+popup về `returnPagePath`; trang đó báo cho trang mua hàng rồi tự đóng:
+
+```js
+onPaymentReturn(async (outcome) => {
+  // outcome: 'returned' (khách đã quay lại) | 'failed' (khách huỷ / cổng báo lỗi)
+  const { status } = await client.getOrderStatus(currentOrderId);
+  if (status === 'PAID') showThankYou(currentOrderId);
+  else if (outcome === 'failed') showMessage('Thanh toán chưa hoàn tất. Bạn có thể thử lại.');
+});
+```
+
+`'returned'` chưa phải là đã trả tiền — luôn hỏi lại `getOrderStatus`. Trên điện
+thoại trình duyệt mở popup thành tab mới; mọi thứ vẫn chạy như trên, và nếu tab
+không tự đóng được thì nó chuyển về `returnPath`.
 
 `createOrder()` trả về `{ orderId, method, amount, currency, payUrl }`, trong đó
 `amount`/`currency` là số tiền cổng sẽ thu. Nếu trang hiển thị giá bằng loại tiền

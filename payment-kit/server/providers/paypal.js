@@ -92,14 +92,17 @@ export function paypalProvider({ returnRoute = "/api/paypal/return" } = {}) {
     async handleReturn(context) {
       const query = new URL(context.request.url).searchParams;
       const paypalOrderId = query.get("token");
-      if (paypalOrderId && !query.has("cancelled")) {
+      const cancelled = query.has("cancelled");
+      if (paypalOrderId && !cancelled) {
         try {
           await settle(paypalOrderId, context);
         } catch (err) {
           console.error("PayPal capture lỗi:", err);
         }
       }
-      return Response.redirect(context.returnUrl, 302);
+      const target = new URL(context.returnUrl);
+      if (cancelled) target.searchParams.set("cancelled", "1");
+      return Response.redirect(target.href, 302);
     },
 
     async handleWebhook(context) {

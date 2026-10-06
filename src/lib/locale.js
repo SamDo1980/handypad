@@ -16,6 +16,7 @@ const vi = {
   "We couldn't start the payment. Please try again.": 'Không thể bắt đầu thanh toán. Vui lòng thử lại.',
   'Waiting for transfer confirmation.': 'Đang chờ xác nhận chuyển khoản.', 'Waiting for confirmation': 'Đang chờ xác nhận',
   'Open ZaloPay': 'Mở ZaloPay', 'Open QR scanner': 'Mở trình quét QR', 'Scan and confirm': 'Quét và xác nhận',
+  'Payment was not completed. You can try again.': 'Thanh toán chưa hoàn tất. Bạn có thể thử lại.',
   'Open payment window': 'Mở cửa sổ thanh toán', 'Reopen payment window': 'Mở lại cửa sổ thanh toán',
   'Return to checkout': 'Trở lại thanh toán',
   'Pay': 'Thanh toán',

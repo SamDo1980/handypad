@@ -1,12 +1,13 @@
 import { insertOrder, getOrder, findOrderByProviderTransId, setProviderTransId, markPaid } from "./orders.js";
 
 import { PaymentError } from "./errors.js";
+import { returnPageResponse } from "./return-page.js";
 
 export { PaymentError };
 export { zalopayProvider } from "./providers/zalopay.js";
 export { paypalProvider } from "./providers/paypal.js";
 
-export function createPaymentKit({ providers, prepareOrder, nextOrderId, onPaid = async () => {}, returnPath = "/" }) {
+export function createPaymentKit({ providers, prepareOrder, nextOrderId, onPaid = async () => {}, returnPath = "/", returnPagePath = null }) {
   const siteUrlOf = (env, request) => (env.SITE_URL || new URL(request.url).origin).replace(/\/$/, "");
   async function confirmPaid(env, orderId, { amount, currency } = {}) {
     const order = await getOrder(env.DB, orderId);
@@ -32,7 +33,7 @@ export function createPaymentKit({ providers, prepareOrder, nextOrderId, onPaid 
       request,
       env,
       siteUrl,
-      returnUrl: `${siteUrl}${returnPath}`,
+      returnUrl: `${siteUrl}${returnPagePath || returnPath}`,
       confirmPaid: (orderId, details) => confirmPaid(env, orderId, details),
       findOrderByProviderTransId: (method, id) => findOrderByProviderTransId(env.DB, method, id),
     };
@@ -87,6 +88,7 @@ export function createPaymentKit({ providers, prepareOrder, nextOrderId, onPaid 
 
     webhook: (name) => providerHandler(name, "handleWebhook"),
     customerReturn: (name) => providerHandler(name, "handleReturn"),
+    returnPage: ({ request, env }) => returnPageResponse(`${siteUrlOf(env, request)}${returnPath}`),
     confirmPaid
   };
 }
