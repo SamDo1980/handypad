@@ -10,6 +10,7 @@ async function odooCall(env, service, method, args) {
     }),
   });
   const data = await res.json();
+  console.log(`Odoo ${service}.${method} kết quả:`, data.result);
   if (data.error) {
     throw new Error(`Odoo lỗi: ${data.error.data?.message || JSON.stringify(data.error)}`);
   }
@@ -27,6 +28,7 @@ async function odooLogin(env) {
 }
 
 function execute(env, uid, model, method, args, kwargs = {}) {
+  console.log(`Chạy Odoo ${model}.${method}(${JSON.stringify(args)}, ${JSON.stringify(kwargs)})`);
   return odooCall(env, "object", "execute_kw", [env.ODOO_DB, uid, env.ODOO_API_KEY, model, method, args, kwargs]);
 }
 
